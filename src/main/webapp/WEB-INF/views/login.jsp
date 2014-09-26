@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <title>Bootshop online Shopping cart</title>
@@ -104,6 +104,7 @@
 </div>
 </div>
 </div>
+<div th:include="layout :: topper"></div>
 <!-- Header End====================================================================== -->
 <p>This is me..</p>
 <!-- Footer ================================================================== -->

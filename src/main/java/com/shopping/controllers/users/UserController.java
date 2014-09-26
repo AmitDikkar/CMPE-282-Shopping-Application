@@ -26,7 +26,7 @@ public class UserController {
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(@RequestParam(value="name", required=true) String name, Model model){
 		model.addAttribute("serverTime", "This is /register:GET");
-		return "testview";
+		return "login";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
