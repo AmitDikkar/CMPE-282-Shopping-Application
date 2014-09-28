@@ -1,4 +1,4 @@
-﻿<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8"/>
 <title>Bootshop online Shopping cart</title>
@@ -13,7 +13,7 @@
 <link href="resources/themes/css/font-awesome.css" rel="stylesheet" type="text/css" />
 <!-- Google-code-prettify -->
 <link href="resources/themes/js/google-code-prettify/prettify.css" rel="stylesheet" />
-<!-- fav and touch icons --> 
+<!-- fav and touch icons -->
 <link rel="shortcut icon" href="resources/themes/images/ico/favicon.ico"></link>
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="resources/themes/images/ico/apple-touch-icon-144-precomposed.png"></link>
 <link rel="apple-touch-icon-precomposed" sizes="114x114" href="resources/themes/images/ico/apple-touch-icon-114-precomposed.png"></link>
@@ -32,26 +32,15 @@
 				<div class="span9">
 					<ul class="breadcrumb">
 						<li><a href="index.html">Home</a> <span class="divider">/</span></li>
-						<li class="active">Register</li>
+						<li class="active">Login</li>
 					</ul>
-					<h3>Registration</h3>
+					<h3>Login</h3>
+					<p><em th:text="${mainMessage}"></em></p>
 					<table class="table table-bordered">
-							 <tr><th>Enter Your Details</th></tr>
+							 <tr><th>Enter Login Details</th></tr>
 							 <tr> 
 							 <td>
-								<form class="form-horizontal" action="register" method="POST">
-								  <div class="control-group">
-									<label class="control-label" for="inputFirstName">Your First Name</label>
-									<div class="controls">
-									  <input type="text" id="inputFirstName" name="inputFirstName" placeholder="First Name"/>
-									</div>
-								  </div>
-								  <div class="control-group">
-									<label class="control-label" for="inputLastName">Your Last Name</label>
-									<div class="controls">
-									  <input type="text" id="inputLastName" name="inputLastName" placeholder="Last Name"/>
-									</div>
-								  </div>
+								<form class="form-horizontal" action="login" method="POST">
 								  <div class="control-group">
 									<label class="control-label" for="inputEmail">Email</label>
 									<div class="controls">
@@ -68,7 +57,7 @@
 										<div class="controls">
 											<input type="hidden" name="email_create" value="1"/> 
 											<input type="hidden" name="is_new_customer" value="1"/>
-											<input class="btn btn-large btn-success" type="submit" value="Register" />
+											<input class="btn btn-large btn-success" type="submit" value="Login" />
 										</div>
 									</div>
 								</form>				  
@@ -82,4 +71,4 @@
 		</div>
 	 <div th:include="layout :: footer"></div>
 </body>
-</html> 
+</html>
