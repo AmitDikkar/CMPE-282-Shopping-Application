@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.shopping.database.RdsConnection;
+import com.shopping.database.UserTable;
 import com.shopping.domains.users.LoginForm;
 import com.shopping.domains.users.RegistrationForm;
 
@@ -55,7 +57,11 @@ public class UserController {
 		System.out.println("Last name is: " + registrationDetails.getInputLastName());
 		System.out.println("Email Address is: " + registrationDetails.getInputEmail());
 		
-		model.addAttribute("mainMessage", "You are now registered, please login.");
+		//RdsConnection conn = new RdsConnection();
+		
+		UserTable tb = new UserTable();
+		tb.insertUserRecord(registrationDetails);
+		//model.addAttribute("mainMessage", "You are now registered, please login.");
 		return "redirect:login";
 	}
 	
@@ -69,7 +75,17 @@ public class UserController {
 	public String loginUser(@ModelAttribute("fres") LoginForm loginDetails, Model model){
 		System.out.println("This is /login POST");
 		System.out.println("Email Address is: " + loginDetails.getInputEmail());
-		System.out.println("Password is: " + loginDetails.getInputEmail());
+		System.out.println("Password is: " + loginDetails.getInputPassword());
+		
+		boolean isAuthentic = new UserTable().isAuthentic(loginDetails);
+		if(!isAuthentic){
+			//model.addAttribute( "auth_message","Authentication Failed");
+			System.out.println("No, user not authentic");
+		}
+		else{
+			System.out.println("Yes, user is authentic");
+		}
+		//redirect to home page after success.
 		return "redirect:/";
 	}
 	

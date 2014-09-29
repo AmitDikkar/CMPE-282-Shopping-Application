@@ -1,7 +1,9 @@
 package com.shopping.app;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -35,6 +37,11 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
+		List<String> listOfProducts = new ArrayList<String>();
+		listOfProducts.add("abc");
+		listOfProducts.add("xyz");
+		listOfProducts.add("pqr");
+		model.addAttribute("listOfProducts", listOfProducts);
 		
 		return "index";
 	}
