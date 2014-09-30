@@ -18,13 +18,13 @@ import com.shopping.controllers.users.UserController;
  *
  */
 @Controller
-@RequestMapping("/products")
 public class ProductController {
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String getProducts(@RequestParam(value="name", required=true) String name, Model model){
+	@RequestMapping(value = "/products", method = RequestMethod.GET)
+	public String getProducts(@RequestParam(value="id", required=true) Long id, Model model){
 		model.addAttribute("serverTime", "This is /register:GET");
+		System.out.println("Id received is" + id);
 		return "product_details";
 	}
 }

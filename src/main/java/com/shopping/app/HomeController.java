@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.shopping.database.ProductCatalogCommands;
+import com.shopping.database.ProductCatalogItem;
 import com.shopping.domains.users.RegistrationForm;
 
 /**
@@ -37,12 +39,17 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		List<String> listOfProducts = new ArrayList<String>();
-		listOfProducts.add("abc");
-		listOfProducts.add("xyz");
-		listOfProducts.add("pqr");
-		model.addAttribute("listOfProducts", listOfProducts);
 		
+		//Populate the list of available products.
+		List<ProductCatalogItem> listOfProducts = null;
+		try {
+			listOfProducts = new ProductCatalogCommands().getProductItems();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//add products list to model, to display it on UI.
+		model.addAttribute("listOfProducts", listOfProducts);
 		return "index";
 	}
 }
