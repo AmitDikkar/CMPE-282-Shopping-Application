@@ -49,6 +49,6 @@
 
 
 	<context:component-scan
-		base-package="com.shopping.app, com.shopping.controllers.users, com.shopping.controllers.products, com.shopping.controllers.carts, com.shopping.controllers.orders" />
+		base-package="com.shopping.app, com.shopping.ui.resources"/>
 
 </beans:beans>

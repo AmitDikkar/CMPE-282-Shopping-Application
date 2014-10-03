@@ -1,22 +1,27 @@
 /**
  * 
  */
-package com.shopping.controllers.users;
+package com.shopping.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shopping.database.RdsConnection;
 import com.shopping.database.UserTable;
 import com.shopping.domains.users.LoginForm;
 import com.shopping.domains.users.RegistrationForm;
+import com.shopping.dto.User;
 
 /**
  * @author Amit
@@ -25,23 +30,11 @@ import com.shopping.domains.users.RegistrationForm;
  * 2. Login
  */
 @Controller
+@RequestMapping(value="/api")
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-	
-	
-	/**
-	 * Returns registration page.
-	 * @param model
-	 * @return Registration page
-	 */
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String showRegister(Model model){
-		model.addAttribute("serverTime", "This is /register:GET");
-		return "register";
-	}
-	
-	
+
 	/**
 	 * Post a registration form and return login page upon success.
 	 * @param registrationDetails
@@ -49,20 +42,18 @@ public class UserController {
 	 * @return Registration page
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String registerUser(@ModelAttribute("joe") RegistrationForm registrationDetails, Model model){
+	public ResponseEntity<User> registerUser(@RequestBody User registrationDetails){
 		logger.info("Inside POST /register method");
 		System.out.println("Inside POST /register method");
 		System.out.println("Email Address is: " + registrationDetails.getInputEmail());
 		System.out.println("Name is: " + registrationDetails.getInputFirstName());
 		System.out.println("Last name is: " + registrationDetails.getInputLastName());
-		System.out.println("Email Address is: " + registrationDetails.getInputEmail());
-		
-		//RdsConnection conn = new RdsConnection();
-		
-		UserTable tb = new UserTable();
-		tb.insertUserRecord(registrationDetails);
+		System.out.println("Email Address is: " + registrationDetails.getInputPassword());
+
+/*		UserTable tb = new UserTable();
+		tb.insertUserRecord(registrationDetails);*/
 		//model.addAttribute("mainMessage", "You are now registered, please login.");
-		return "redirect:login";
+		return new ResponseEntity<User>(registrationDetails, HttpStatus.CREATED);
 	}
 	
 	/**
@@ -72,7 +63,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String loginUser(@ModelAttribute("fres") LoginForm loginDetails, Model model){
+	public ResponseEntity<String> loginUser(@RequestBody LoginForm loginDetails, Model model){
 		System.out.println("This is /login POST");
 		System.out.println("Email Address is: " + loginDetails.getInputEmail());
 		System.out.println("Password is: " + loginDetails.getInputPassword());
@@ -81,17 +72,11 @@ public class UserController {
 		if(!isAuthentic){
 			//model.addAttribute( "auth_message","Authentication Failed");
 			System.out.println("No, user not authentic");
+			return new ResponseEntity<String>("Invalid credentials", HttpStatus.FORBIDDEN);
 		}
 		else{
 			System.out.println("Yes, user is authentic");
+			return new ResponseEntity<String>(HttpStatus.OK);
 		}
-		//redirect to home page after success.
-		return "redirect:/";
-	}
-	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String testview(Model model){
-		System.out.println("This is /login GET");
-		return "login";
 	}
 }

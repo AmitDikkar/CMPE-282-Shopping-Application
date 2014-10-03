@@ -32,7 +32,6 @@
 					<div class="span9">		
 					<div class="well well-small">
 					<h4>Featured Products <small class="pull-right">200+ featured products</small></h4>
-					<h4 th:text="${serverTime}"></h4>
 					
 					<div th:each="product : ${listOfProducts}">
 						<p th:text="${product.name}"></p>

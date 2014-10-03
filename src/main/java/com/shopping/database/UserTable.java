@@ -11,6 +11,7 @@ import java.sql.Statement;
 import com.mysql.jdbc.PreparedStatement;
 import com.shopping.domains.users.LoginForm;
 import com.shopping.domains.users.RegistrationForm;
+import com.shopping.dto.User;
 
 /**
  * @author Amit
@@ -27,7 +28,7 @@ public class UserTable {
 		conn = new RdsConnection().getRdsConnection();
 	}
 
-	public void insertUserRecord(RegistrationForm userDetails) {
+	public void insertUserRecord(User userDetails) {
 		// STEP 4: Execute a query
 		System.out.println("Inserting records into the table...");
 		try {
