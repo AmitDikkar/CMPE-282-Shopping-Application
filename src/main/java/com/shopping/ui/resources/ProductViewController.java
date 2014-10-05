@@ -1,10 +1,12 @@
 package com.shopping.ui.resources;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 import com.shopping.database.ProductCatalogCommands;
 import com.shopping.database.ProductCatalogItem;
@@ -12,14 +14,14 @@ import com.shopping.database.ProductCatalogItem;
 @Controller
 public class ProductViewController {
 	
-	//returns our main product details page.
+	//returns prduct details page of the given product id.
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
 	public String getProducts(@RequestParam(value="id", required=true) Long id, Model model){
-		model.addAttribute("serverTime", "This is /register:GET");
-		System.out.println("Id received is" + id);
 		try {
-			ProductCatalogItem item = new ProductCatalogCommands().getProductItemById(id);
-			model.addAttribute("item", item);
+			RestTemplate restTemplate = new RestTemplate();
+			ResponseEntity<ProductCatalogItem> product = restTemplate.getForEntity("http://localhost:8080/app/" + "api/products/"+id, ProductCatalogItem.class);
+			model.addAttribute("item", product.getBody());
+			System.out.println("Product received from RestTemplate is: " + product.getBody().getName());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

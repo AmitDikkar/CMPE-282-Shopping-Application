@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,6 +40,10 @@ public class ProductController {
 		return tp;
 	}*/
 	
+	/**
+	 * Mapping for GET: /api/products
+	 * @return
+	 */
 	@RequestMapping(value="/products", method = RequestMethod.GET)
 	public ResponseEntity<List<ProductCatalogItem>> getAllProducts(){
 		//Populate the list of available products.
@@ -53,6 +58,24 @@ public class ProductController {
 		return new ResponseEntity<List<ProductCatalogItem>>(listOfProducts, HttpStatus.OK);
 	}
 	
+	/**
+	 * Mapping for GET /api/products?id=104
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/products/{id}", method=RequestMethod.GET)
+	public @ResponseBody ProductCatalogItem getProducts(@PathVariable Long id, Model model){
+		System.out.println("Id received is" + id);
+		ProductCatalogItem item = null;
+		try {
+			item = new ProductCatalogCommands().getProductItemById(id);
+			return item;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return item;
+		}
+	}
 	
 	@RequestMapping(value="/views/timepasspage", method = RequestMethod.GET)
 	public String displayTimePassView(){

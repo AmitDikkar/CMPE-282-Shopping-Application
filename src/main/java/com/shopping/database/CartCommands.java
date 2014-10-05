@@ -14,6 +14,10 @@ import com.shopping.dto.AddToCartForm;
  * @author Amit
  *
  */
+/**
+ * @author Amit
+ *
+ */
 public class CartCommands {
 
 	/* A connection object which can give you a Object mapper.*/
@@ -23,16 +27,27 @@ public class CartCommands {
 		this.conn = new DynamoDbConnection();
 	}
 
+	
+	/**
+	 * Saves Item into the cart. - DynamoDB.
+	 * @param form
+	 */
 	public void saveCartItem(AddToCartForm form) {
 		DynamoDBMapper mapper = this.conn.getMapper();
 		CartItem item = new CartItem();
 		item.setCartId(UUID.randomUUID().getLeastSignificantBits());
-		item.setProductId(form.getProdutId());
+		item.setProductId(form.getProductId());
 		item.setQuantity(form.getQuantity());
 		item.setUserId(form.getUserId());
 		mapper.save(item);
 	}
 
+	
+	/**
+	 * Returns list of all items that are in cart for that user.
+	 * @param userId
+	 * @return
+	 */
 	public List<CartItem> getCartItemsFromUserId(int userId){
 		//Declare mapper
 		DynamoDBMapper mapper = this.conn.getMapper();

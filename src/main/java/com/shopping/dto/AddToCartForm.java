@@ -9,20 +9,23 @@ package com.shopping.dto;
  */
 public class AddToCartForm {
 
-	Long produtId;
-	int userId;
-	int quantity;
+	public Long productId;
+	
+	public int userId;
+	
+	public int quantity;
+	
 	/**
-	 * @return the produtId
+	 * @return the productId
 	 */
-	public Long getProdutId() {
-		return produtId;
+	public Long getProductId() {
+		return productId;
 	}
 	/**
-	 * @param produtId the produtId to set
+	 * @param productId the productId to set
 	 */
-	public void setProdutId(Long produtId) {
-		this.produtId = produtId;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 	/**
 	 * @return the userId
@@ -48,5 +51,4 @@ public class AddToCartForm {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
 }

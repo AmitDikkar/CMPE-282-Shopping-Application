@@ -84,17 +84,18 @@
 							</div>
 						</div>
 						<div class="span6">
-							<h3>Fujifilm FinePix S2950 Digital Camera</h3>
-							<small>- (14MP, 18x Optical Zoom) 3-inch LCD</small>
+							<h3 th:text="${item.name}">Fujifilm FinePix S2950 Digital Camera</h3>
+							<small th:text="${item.description}">- (14MP, 18x Optical Zoom) 3-inch LCD</small>
 							<hr class="soft" />
 							<form class="form-horizontal qtyFrm" action="cart" method="POST">
 								<div class="control-group">
-									<label class="control-label"><span>$222.00</span></label>
+									<label class="control-label"><span th:text="'$'+ ${item.price}">$222.00</span></label>
 									<div class="controls">
-										<input type="number" name="quantity" class="span1" placeholder="Qty." />
+										<input type="number" name="quantity" id="quantity" class="span1" placeholder="Qty." value=1 />
+										<input type="hidden" name="userId" id="userId" value=1/>
+										<input type="hidden" name="productId" id="productId" value="${item.productId}"/>
 										<button type="submit"
 											class="btn btn-large btn-primary pull-right">
-
 											Add to cart <i class=" icon-shopping-cart"></i>
 										</button>
 									</div>

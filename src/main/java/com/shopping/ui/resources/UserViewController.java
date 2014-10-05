@@ -19,8 +19,14 @@ public class UserViewController {
 		return "register";
 	}
 	
+	
+	/**
+	 * Returns login page.
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String testview(Model model){
+	public String showLogin(Model model){
 		System.out.println("This is /login GET");
 		return "login";
 	}
