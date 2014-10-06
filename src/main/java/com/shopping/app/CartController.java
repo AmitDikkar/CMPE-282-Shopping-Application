@@ -74,10 +74,14 @@ public class CartController {
 		try {
 			comm = new CartCommands();
 			comm.saveCartItem(cartItem);
+			System.out.println("returning success");
 			return new ResponseEntity<String>("Item Added", HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("returning error");
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	/*public ResponseEntity<String> increaseQuantity(@RequestBody )*/
 }

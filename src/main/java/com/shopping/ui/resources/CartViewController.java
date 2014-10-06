@@ -45,6 +45,4 @@ public class CartViewController {
 		model.addAttribute("items", cartItems);
 		return "cart";
 	}
-	
-	
 }

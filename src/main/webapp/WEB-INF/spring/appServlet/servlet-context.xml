@@ -46,7 +46,12 @@
 	<beans:bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
 		<beans:property name="templateEngine" ref="templateEngine" />
 	</beans:bean>
-
+	
+ 	<beans:bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <beans:property name="prefixJson" value="true"/>
+        <beans:property name="supportedMediaTypes" value="application/json"/>
+    </beans:bean>
+ 
 
 	<context:component-scan
 		base-package="com.shopping.app, com.shopping.ui.resources"/>

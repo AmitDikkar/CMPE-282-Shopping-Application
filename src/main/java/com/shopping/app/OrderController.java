@@ -21,7 +21,7 @@ public class OrderController {
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
-	public String getProducts(@RequestParam(value="name", required=true) String name, Model model){
+	public String getProducts(@RequestParam(value="id", required=true) String name, Model model){
 		model.addAttribute("serverTime", "This is /register:GET");
 		return "order";
 	}
