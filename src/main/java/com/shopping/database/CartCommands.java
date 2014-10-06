@@ -3,11 +3,19 @@
  */
 package com.shopping.database;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
+import com.amazonaws.services.dynamodbv2.datamodeling.ScanResultPage;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
+import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.shopping.dto.AddToCartForm;
 
 /**
@@ -73,5 +81,58 @@ public class CartCommands {
 		
 		//return the first item (we will have only one item)
 		return itemList;
+	}
+
+	public void removeItemFromCart(Long cartId) {
+		DynamoDBMapper mapper = this.conn.getMapper();
+		DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+		Map<String, Condition> scanFilter = new HashMap<String, Condition>();
+		Condition scanCondition = new Condition()
+		    .withComparisonOperator(ComparisonOperator.EQ.toString())
+		    .withAttributeValueList(new AttributeValue().withN(cartId.toString()));
+		
+		scanFilter.put("CartId", scanCondition);
+        
+		scanExpression.setScanFilter(scanFilter);
+		System.out.println("Going to retrieve item.");
+		PaginatedScanList<CartItem> items = mapper.scan(CartItem.class, scanExpression);
+		System.out.println("Number of items retrived. " + items.size());
+		System.out.println("Going to remove a cartItem with productId: " + items.get(0).getProductId());
+		mapper.delete(items.get(0));
+		
+	}
+	
+	public CartItem increseQuantity(Long cartId){
+		DynamoDBMapper mapper = this.conn.getMapper();
+		DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+		Map<String, Condition> scanFilter = new HashMap<String, Condition>();
+		Condition scanCondition = new Condition()
+		    .withComparisonOperator(ComparisonOperator.EQ.toString())
+		    .withAttributeValueList(new AttributeValue().withN(cartId.toString()));
+		
+		scanFilter.put("CartId", scanCondition);
+		scanExpression.setScanFilter(scanFilter);
+		PaginatedScanList<CartItem> items = mapper.scan(CartItem.class, scanExpression);
+		CartItem item = items.get(0);
+		item.setQuantity(item.getQuantity() + 1);
+		mapper.save(item);
+		return item;
+	}
+	
+	public CartItem decreaseQuantity(Long cartId){
+		DynamoDBMapper mapper = this.conn.getMapper();
+		DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+		Map<String, Condition> scanFilter = new HashMap<String, Condition>();
+		Condition scanCondition = new Condition()
+		    .withComparisonOperator(ComparisonOperator.EQ.toString())
+		    .withAttributeValueList(new AttributeValue().withN(cartId.toString()));
+		
+		scanFilter.put("CartId", scanCondition);
+		scanExpression.setScanFilter(scanFilter);
+		PaginatedScanList<CartItem> items = mapper.scan(CartItem.class, scanExpression);
+		CartItem item = items.get(0);
+		item.setQuantity(item.getQuantity() - 1);
+		mapper.save(item);
+		return item;
 	}
 }

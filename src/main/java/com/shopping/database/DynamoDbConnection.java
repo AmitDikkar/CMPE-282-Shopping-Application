@@ -26,7 +26,6 @@ public class DynamoDbConnection {
         AWSCredentials credentials = new BasicAWSCredentials("AKIAIWB2ZNKYS5MHDXVQ", "BmNQHBa8s9BuJRQSe5ATUCIoi7zOPkm5TP/kgkY/");
         client = new AmazonDynamoDBClient(credentials);
         client.setRegion(Region.getRegion(Regions.US_WEST_2));
-        System.out.println("We are authenticated");
     }
 
 	/**

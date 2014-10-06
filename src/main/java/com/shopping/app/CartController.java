@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.shopping.database.CartCommands;
 import com.shopping.database.CartItem;
@@ -29,7 +30,8 @@ import com.shopping.dto.AddToCartForm;
 public class CartController {
 
 	private static final Logger logger = LoggerFactory.getLogger(CartController.class);
-	
+	private final String CART_INCREASE_OPERATION = "increase";
+	private final String CART_DECREASE_OPERATION = "decrease";
 	
 	/**
 	 * Returns all cart items added by the user.
@@ -50,7 +52,6 @@ public class CartController {
 			List<CartItem> listOfItems = comm.getCartItemsFromUserId(userId);
 			return new ResponseEntity<List<CartItem>>(listOfItems, HttpStatus.CREATED);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new ResponseEntity<List<CartItem>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -83,5 +84,44 @@ public class CartController {
 		}
 	}
 	
-	/*public ResponseEntity<String> increaseQuantity(@RequestBody )*/
+	@RequestMapping(value = "/cart", method = RequestMethod.DELETE)
+	public ResponseEntity<String> removeFromCart(@RequestParam("cartId") Long cartId){
+		System.out.println("Inside DELETE: /api/cart");
+		System.out.println("Cart ID received is: " + cartId);
+		CartCommands comm = null;
+		try {
+			comm = new CartCommands();
+			comm.removeItemFromCart(cartId);
+			return new ResponseEntity<String>("Item removed", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("Item can not removed", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value="/cart", method=RequestMethod.PUT)
+	public ResponseEntity<CartItem> updateQuantity(@RequestParam("cartId") Long cartId, @RequestParam("operation") String operation){
+		System.out.println("Inside PUT: /cart");
+		System.out.println("Card id received is: " + cartId);
+		System.out.println("Operation is: " + operation);
+		
+		CartCommands comm = null;
+		CartItem item = null;
+		try {
+			comm = new CartCommands();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<CartItem>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if(operation.equals(this.CART_INCREASE_OPERATION)){
+			item = comm.increseQuantity(cartId);
+		}
+		else if(operation.equals(this.CART_DECREASE_OPERATION)){
+			item = comm.decreaseQuantity(cartId);
+		}
+		else{
+			return new ResponseEntity<CartItem>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<CartItem>(item, HttpStatus.OK);
+	}
 }

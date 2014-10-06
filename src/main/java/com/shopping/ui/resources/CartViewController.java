@@ -38,11 +38,16 @@ public class CartViewController {
 		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity("http://localhost:8080/app/" + "api/cart/"+userId, CartItem[].class);
 		CartItem[] cartItems = receivedList.getBody();
 		System.out.println("Below are the cart items of " + userId + " user");
+		//add all prices
+		float ultimateTotal = 0;
 		for(CartItem item : cartItems){
 			System.out.println("Cart Item:");
-			System.out.println(item.getProductId());
+			System.out.println("product retrived is: " + item.getProduct().getCategory());
+			System.out.println("---------------");
+			ultimateTotal = ultimateTotal + item.getTotalPrice();
 		}
-		model.addAttribute("items", cartItems);
+		model.addAttribute("listOfCartItems", cartItems);
+		model.addAttribute("ultimateTotal", ultimateTotal);
 		return "cart";
 	}
 }

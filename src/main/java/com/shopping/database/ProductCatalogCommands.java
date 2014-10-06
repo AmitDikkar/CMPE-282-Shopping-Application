@@ -89,10 +89,10 @@ public class ProductCatalogCommands {
 		//execute that query
 		List<ProductCatalogItem> itemList = mapper.query(ProductCatalogItem.class, queryExpression);
 
-		for (int i = 0; i < itemList.size(); i++) {
+/*		for (int i = 0; i < itemList.size(); i++) {
 			System.out.println(itemList.get(i).getName());
 			System.out.println(itemList.get(i).getCategory());
-		}
+		}*/
 
 		//return the first item (we will have only one item)
 		return itemList.get(0);

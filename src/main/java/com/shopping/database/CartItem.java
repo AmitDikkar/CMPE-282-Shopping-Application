@@ -5,6 +5,7 @@ package com.shopping.database;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
@@ -23,6 +24,9 @@ public class CartItem {
 	
 	private int quantity;
 
+	private float totalPrice;
+	
+	private ProductCatalogItem product;
 	/**
 	 * @return the userId
 	 */
@@ -65,7 +69,14 @@ public class CartItem {
 	 * @param productId the productId to set
 	 */
 	public void setProductId(Long productId) {
+		System.out.println("setter");
 		this.productId = productId;
+		try {
+			ProductCatalogCommands comm = new ProductCatalogCommands();
+			this.product = comm.getProductItemById(this.productId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 	}
 
 	/**
@@ -81,5 +92,36 @@ public class CartItem {
 	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+		ProductCatalogCommands comm;
+		try {
+			comm = new ProductCatalogCommands();
+			this.totalPrice = comm.getProductItemById(this.productId).getPrice() * this.quantity;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@DynamoDBIgnore
+	public float getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(float totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	/**
+	 * @return the product
+	 */
+	@DynamoDBIgnore
+	public ProductCatalogItem getProduct() {
+		return product;
+	}
+
+	/**
+	 * @param product the product to set
+	 */
+	public void setProduct(ProductCatalogItem product) {
+		this.product = product;
 	}
 }
