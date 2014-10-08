@@ -30,7 +30,6 @@ public class CartViewController {
 	 */
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
 	public String getCart(@RequestParam (value="id", required=true) int userId, Model model){
-		model.addAttribute("serverTime", "This is /register:GET");
 		System.out.println("Inside /cart GET");
 		System.out.println("user id is: " + userId);
 		
@@ -44,8 +43,10 @@ public class CartViewController {
 			System.out.println("Cart Item:");
 			System.out.println("product retrived is: " + item.getProduct().getCategory());
 			System.out.println("---------------");
+			System.out.println("Total Price is: " + item.getTotalPrice());
 			ultimateTotal = ultimateTotal + item.getTotalPrice();
 		}
+		System.out.println("Ultimate total is: " + ultimateTotal);
 		model.addAttribute("listOfCartItems", cartItems);
 		model.addAttribute("ultimateTotal", ultimateTotal);
 		return "cart";

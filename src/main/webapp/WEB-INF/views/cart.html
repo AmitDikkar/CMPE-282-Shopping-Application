@@ -20,6 +20,7 @@
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="resources/themes/images/ico/apple-touch-icon-72-precomposed.png"></link>
 <link rel="apple-touch-icon-precomposed" href="resources/themes/images/ico/apple-touch-icon-57-precomposed.png"></link>
 <style type="text/css" id="enject"></style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <script type="text/javascript">
    $(document).ready(function() {
@@ -40,23 +41,41 @@
 	      return o;
 	   };
 	   
-/* 	   $("form#increaseQuantity").submit(function(event) {
-		   alert("triggered");
+ 	   $(".updateQuantity").click(function(event) {
 		   event.preventDefault();
-		   var userId = $("#userId").val();
-		   alert(userId); */
-/* 		   $.ajax({
+		   //alert("triggered");
+		   var data = (JSON.stringify($(this).serializeObject()));
+		   //alert(data);
+ 		   $.ajax({
 			   url:"api/cart",
 			   type:"PUT",
+			   data:data,
+			   contentType:"application/json",
+			   dataType:"json",
+			   success: function(){
+				  window.location.reload();
+			   },
+			   error: function(errMsg){
+				   alert(errMsg);
+			   }
+			 });
+	   });
+ 	   
+ 	  $(".btn-danger").click(function(event) {
+		   event.preventDefault();
+		   alert($(this).attr("value"));
+		   $.ajax({
+			   url:"api/cart?cartId="+$(this).attr("value"),
+			   type:"DELETE",
 			   contentType:"application/json",
 			   success: function(){
 				  window.location.reload();
 			   },
 			   error: function(errMsg){
-				   alert("Internal Error has occured, please try after some time.");
+				   alert(errMsg);
 			   }
-			 }); */
-	   //});
+			 });
+	   });
    });
 </script>
 </head>
@@ -73,7 +92,7 @@
 						<li><a href="index.html">Home</a> <span class="divider">/</span></li>
 						<li class="active"> SHOPPING CART</li>
 				    </ul>
-					<h3>  SHOPPING CART [ <small>3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
+					<h3>  SHOPPING CART [ <small th:text="${#lists.size(listOfCartItems)} + ' Item(s)'">3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
 					<hr class="soft"/>		
 							
 					<table class="table table-bordered">
@@ -89,19 +108,25 @@
 								</tr>
 				              </thead>
 				              <tbody>
-				              <tr th:each="cartItem : ${listOfCartItems}">
+				              <tr th:each="cartItem, iterStat : ${listOfCartItems}">
 				                  <td> <img width="60" src="resources/themes/images/products/4.jpg" alt=""/></td>
 				                  <td th:text="${cartItem.product.name}">MASSA AST<br/>Color : black, Material : metal</td>
 								  <td>
 									<div class="input-append">
-										<input class="span1" style="max-width:34px" id="appendedInputButtons" size="16" type="text" disabled="disabled" th:text="${cartItem.quantity}"/>
-										<form id="increaseQuantity" name=increaseQuantity action="api/cart" method="put">
-											<input type="hidden" id="cartId" name="cartId" th:value="${cartItem.cartId}"></input>
-											<input type="hidden" id="userId" name="userId" th:value="${cartItem.userId}"></input>
+										<input class="span1" style="max-width:34px" id="appendedInputButtons" size="16" type="text" disabled="disabled" th:value="${cartItem.quantity}"/>
+										<form id="'addQuantity' + ${iterStat.count}" class="updateQuantity" name="increaseQuantity" action="api/cart" method="PUT">
+											<input type="hidden" th:id="'addCartId' + ${iterStat.count}" name="cartId" th:value="${cartItem.cartId}"></input>
+											<input type="hidden" th:id="'addUserId' + ${iterStat.count}" name="userId" th:value="${cartItem.userId}"></input>
+											<input type="hidden" th:id="'addAction' + ${iterStat.count}" name="action" th:value="decrease"></input>
 											<button class="btn" type="submit" value="Submit"><i class="icon-minus"></i></button>
 										</form>
-										<button class="btn" type="button"><i class="icon-plus"></i></button>
-										<button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>
+										<form id="'subQuantity' + ${iterStat.count}" class="updateQuantity" name="increaseQuantity" action="api/cart" method="PUT">
+											<input type="hidden" th:id="'subCartId' + ${iterStat.count}" name="cartId" th:value="${cartItem.cartId}"></input>
+											<input type="hidden" th:id="'subUserId' + ${iterStat.count}" name="userId" th:value="${cartItem.userId}"></input>
+											<input type="hidden" th:id="'subAction' + ${iterStat.count}" name="action" th:value="increase"></input>
+											<button class="btn" type="submit" value="Submit"><i class="icon-plus"></i></button>
+										</form>
+										<button class="btn btn-danger" type="submit" th:value="${cartItem.cartId}" th:id="'delCart' + ${iterStat.count}"><i class="icon-remove icon-white"></i></button>
 									</div>
 								  </td>
 				                  <td th:text="${cartItem.product.price}">$120.00</td>
@@ -157,7 +182,7 @@
 				                </tr>
 								 <tr>
 				                  <td colspan="6" style="text-align:right"><strong>TOTAL ($228 - $50 + $31) =</strong></td>
-				                  <td class="label label-important" style="display:block"> <strong> $155.00 </strong></td>
+				                  <td class="label label-important" style="display:block"> <strong th:text="${ultimateTotal}"> $155.00 </strong></td>
 				                </tr>
 							</tbody>
 				            </table>

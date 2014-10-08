@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.shopping.database.CartCommands;
 import com.shopping.database.CartItem;
 import com.shopping.dto.AddToCartForm;
+import com.shopping.dto.UpdateCartForm;
 
 /**
  * @author Amit
@@ -30,8 +31,8 @@ import com.shopping.dto.AddToCartForm;
 public class CartController {
 
 	private static final Logger logger = LoggerFactory.getLogger(CartController.class);
-	private final String CART_INCREASE_OPERATION = "increase";
-	private final String CART_DECREASE_OPERATION = "decrease";
+	private final String CART_INCREASE_ACTION = "increase";
+	private final String CART_DECREASE_ACTION = "decrease";
 	
 	/**
 	 * Returns all cart items added by the user.
@@ -100,10 +101,10 @@ public class CartController {
 	}
 	
 	@RequestMapping(value="/cart", method=RequestMethod.PUT)
-	public ResponseEntity<CartItem> updateQuantity(@RequestParam("cartId") Long cartId, @RequestParam("operation") String operation){
-		System.out.println("Inside PUT: /cart");
-		System.out.println("Card id received is: " + cartId);
-		System.out.println("Operation is: " + operation);
+	public ResponseEntity<CartItem> updateQuantity(@RequestBody UpdateCartForm updateRequest){
+		System.out.println("Inside PUT: api/cart");
+		System.out.println("Card id received is: " + updateRequest.getCartId());
+		System.out.println("Operation is: " + updateRequest.getAction());
 		
 		CartCommands comm = null;
 		CartItem item = null;
@@ -113,11 +114,11 @@ public class CartController {
 			e.printStackTrace();
 			return new ResponseEntity<CartItem>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		if(operation.equals(this.CART_INCREASE_OPERATION)){
-			item = comm.increseQuantity(cartId);
+		if(updateRequest.getAction().equals(this.CART_INCREASE_ACTION)){
+			item = comm.increseQuantity(updateRequest.getCartId());
 		}
-		else if(operation.equals(this.CART_DECREASE_OPERATION)){
-			item = comm.decreaseQuantity(cartId);
+		else if(updateRequest.getAction().equals(this.CART_DECREASE_ACTION)){
+			item = comm.decreaseQuantity(updateRequest.getCartId());
 		}
 		else{
 			return new ResponseEntity<CartItem>(HttpStatus.BAD_REQUEST);

@@ -92,17 +92,18 @@ public class CartItem {
 	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
-		ProductCatalogCommands comm;
-		try {
-			comm = new ProductCatalogCommands();
-			this.totalPrice = comm.getProductItemById(this.productId).getPrice() * this.quantity;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@DynamoDBIgnore
 	public float getTotalPrice() {
+		ProductCatalogCommands comm;
+		try {
+			comm = new ProductCatalogCommands();
+			this.totalPrice = comm.getProductItemById(this.productId).getPrice() * this.quantity;
+			System.out.println("Object: Total price value in setter: " + this.totalPrice);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return totalPrice;
 	}
 

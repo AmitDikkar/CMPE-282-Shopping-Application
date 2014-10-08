@@ -23,7 +23,7 @@ public class DynamoDbConnection {
 	}
 	
 	public void createClient() throws Exception {
-        AWSCredentials credentials = new BasicAWSCredentials("AKIAIWB2ZNKYS5MHDXVQ", "BmNQHBa8s9BuJRQSe5ATUCIoi7zOPkm5TP/kgkY/");
+        AWSCredentials credentials = new BasicAWSCredentials("AKIAJPZNJRF3R5B7S2NQ", "sTb3NtZOKzCRYQogVscTSREgWzZC5UzO4bcpYVja");
         client = new AmazonDynamoDBClient(credentials);
         client.setRegion(Region.getRegion(Regions.US_WEST_2));
     }
