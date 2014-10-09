@@ -47,6 +47,7 @@ public class CartCommands {
 		item.setProductId(form.getProductId());
 		item.setQuantity(form.getQuantity());
 		item.setUserId(form.getUserId());
+		item.setIsOrdered(form.getIsOrdered());
 		mapper.save(item);
 	}
 
@@ -66,7 +67,13 @@ public class CartCommands {
 
 		//Form a query
 		DynamoDBQueryExpression<CartItem> queryExpression = new DynamoDBQueryExpression<CartItem>()
-				.withHashKeyValues(hashKeyValues);
+				.withHashKeyValues(hashKeyValues)
+				.withQueryFilterEntry("IsOrdered", 
+						new Condition()
+				.withComparisonOperator(ComparisonOperator.EQ)
+				.withAttributeValueList(new AttributeValue().withN("0")));
+		//add query filter
+			
 		queryExpression.setHashKeyValues(hashKeyValues);
 
 		//execute that query
@@ -119,6 +126,7 @@ public class CartCommands {
 		return item;
 	}
 	
+	//returns list of items ordered so far by the user
 	public CartItem decreaseQuantity(Long cartId){
 		DynamoDBMapper mapper = this.conn.getMapper();
 		DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
@@ -134,5 +142,48 @@ public class CartCommands {
 		item.setQuantity(item.getQuantity() - 1);
 		mapper.save(item);
 		return item;
+	}
+	
+	public List<CartItem> getOrderItemsFromUserId(int userId){
+		//Declare mapper
+		DynamoDBMapper mapper = this.conn.getMapper();
+
+		//Create hash key values which to form a query
+		CartItem hashKeyValues = new CartItem();
+		hashKeyValues.setUserId(userId);
+
+		//Form a query
+		DynamoDBQueryExpression<CartItem> queryExpression = new DynamoDBQueryExpression<CartItem>()
+				.withHashKeyValues(hashKeyValues)
+				.withQueryFilterEntry("IsOrdered", 
+						new Condition()
+				.withComparisonOperator(ComparisonOperator.EQ)
+				.withAttributeValueList(new AttributeValue().withN("1")));
+		//add query filter
+			
+		queryExpression.setHashKeyValues(hashKeyValues);
+
+		//execute that query
+		List<CartItem> itemList = mapper.query(CartItem.class, queryExpression);
+
+		for (int i = 0; i < itemList.size(); i++) {
+			System.out.println(itemList.get(i).getUserId());
+			System.out.println(itemList.get(i).getCartId());
+			System.out.println(itemList.get(i).getProductId());
+			System.out.println(itemList.get(i).getQuantity());
+		}
+		
+		//return the first item (we will have only one item)
+		return itemList;
+	}
+	
+	public List<CartItem> placeOrder(int userId){
+		List<CartItem> cartItems = getCartItemsFromUserId(userId);
+		DynamoDBMapper mapper = this.conn.getMapper();
+		for (CartItem cartItem : cartItems){
+			cartItem.setIsOrdered(1);
+			mapper.save(cartItem);
+		}
+		return cartItems;
 	}
 }

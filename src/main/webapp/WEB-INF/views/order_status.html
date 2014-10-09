@@ -1,0 +1,63 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"/>
+<title>Bootshop online Shopping cart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content=""/>
+<meta name="author" content=""/>
+<!-- Bootstrap style -->
+<link id="callCss" rel="stylesheet" href="resources/themes/bootshop/bootstrap.min.css" media="screen" />
+<link href="resources/themes/css/base.css" rel="stylesheet" media="screen" />
+<!-- Bootstrap style responsive -->
+<link href="resources/themes/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<link href="resources/themes/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<!-- Google-code-prettify -->
+<link href="resources/themes/js/google-code-prettify/prettify.css" rel="stylesheet" />
+<!-- fav and touch icons -->
+<link rel="shortcut icon" href="resources/themes/images/ico/favicon.ico"></link>
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="resources/themes/images/ico/apple-touch-icon-144-precomposed.png"></link>
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="resources/themes/images/ico/apple-touch-icon-114-precomposed.png"></link>
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="resources/themes/images/ico/apple-touch-icon-72-precomposed.png"></link>
+<link rel="apple-touch-icon-precomposed" href="resources/themes/images/ico/apple-touch-icon-57-precomposed.png"></link>
+<style type="text/css" id="enject"></style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+
+<body>
+	 <div th:include="layout :: topper"></div>
+	 <div id="mainBody">
+		<div class="container">
+			<div class="row">
+				<div th:include="layout :: sidebar"></div>
+				<!-- *************************Main body******************* -->
+				<div class="span9">
+				    <ul class="breadcrumb">
+						<li><a href="index.html">Home</a> <span class="divider">/</span></li>
+						<li class="active"> SHOPPING CART</li>
+				    </ul>
+					<h3>  ORDER CONFIRMATION [ <small>3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
+					<hr class="soft"/>
+					<table>
+						<tr>
+							<th><p>Order Successful</p></th>
+							<th><p style="color: green;">This is status </p></th>
+						</tr>
+					</table>		
+					<a href="/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
+				</div>
+				<!-- *************************Main body ends******************* -->
+				</div>
+			</div>
+		</div>
+	 <div th:include="layout :: footer"></div>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+</body>
+</html>

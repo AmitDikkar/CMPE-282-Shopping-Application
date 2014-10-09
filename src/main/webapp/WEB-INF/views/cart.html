@@ -76,6 +76,27 @@
 			   }
 			 });
 	   });
+ 	  
+ 	  $("form#shipProduct").submit(function(event){
+ 		  event.preventDefault();
+		   //alert("triggered");
+		   var data = (JSON.stringify($(this).serializeObject()));
+		   alert(data);
+ 		   $.ajax({
+			   url:"api/shipping",
+			   type:"POST",
+			   data:data,
+			   contentType:"application/json",
+			   dataType:"json",
+			   success: function(){
+				  window.location.reload();
+			   },
+			   error: function(requestObject, error, errorThrown){
+				   alert(error);
+				   alert(errorThrown);
+			   }
+			 });
+ 	  });
    });
 </script>
 </head>
@@ -93,7 +114,7 @@
 						<li class="active"> SHOPPING CART</li>
 				    </ul>
 					<h3>  SHOPPING CART [ <small th:text="${#lists.size(listOfCartItems)} + ' Item(s)'">3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
-					<hr class="soft"/>		
+					<hr class="soft"/>
 							
 					<table class="table table-bordered">
 				              <thead>
@@ -188,33 +209,40 @@
 				            </table>
 						
 							<table class="table table-bordered">
-							 <tr><th>ESTIMATE YOUR SHIPPING </th></tr>
+							 <tr><th>Give Your Shipping Address </th></tr>
 							 <tr> 
 							 <td>
-								<form class="form-horizontal">
+								<form class="form-horizontal" name="shipProduct" id="shipProduct" action="shipping" method="POST">
 								  <div class="control-group">
-									<label class="control-label" for="inputCountry">Country </label>
+								  	<label class="control-label" for="street">Street </label>
 									<div class="controls">
-									  <input type="text" id="inputCountry" placeholder="Country"/>
+									  <input type="text" id="street" name="street" placeholder="Country"/>
 									</div>
 								  </div>
 								  <div class="control-group">
-									<label class="control-label" for="inputPost">Post Code/ Zipcode </label>
+									<label class="control-label" for="country">Country </label>
 									<div class="controls">
-									  <input type="text" id="inputPost" placeholder="Postcode"/>
+									  <input type="text" id="country" name="country" placeholder="Country"/>
 									</div>
 								  </div>
 								  <div class="control-group">
+									<label class="control-label" for="zipCode">Post Code/ Zipcode </label>
 									<div class="controls">
-									  <button type="submit" class="btn">ESTIMATE </button>
+									  <input type="text" id="zipCode" name="zipCode" placeholder="Zip Code"/>
+									</div>
+								  </div>
+								  <input type="hidden" name="userId" value="1"></input>
+								  <div class="control-group">
+									<div class="controls">
+									  <button type="submit" value="Submit" class="btn">Confirm </button>
 									</div>
 								  </div>
 								</form>				  
 							  </td>
 							  </tr>
 				            </table>		
-					<a href="products.html" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
-					<a href="login.html" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></a>	
+					<a href="/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
+					<a href="reviewOrder?userId=1" class="btn btn-large pull-right">Checkout <i class="icon-arrow-right"></i></a>	
 				</div>
 				<!-- *************************Main body ends******************* -->
 				</div>

@@ -27,6 +27,8 @@ public class CartItem {
 	private float totalPrice;
 	
 	private ProductCatalogItem product;
+	
+	private int isOrdered;
 	/**
 	 * @return the userId
 	 */
@@ -124,5 +126,20 @@ public class CartItem {
 	 */
 	public void setProduct(ProductCatalogItem product) {
 		this.product = product;
+	}
+
+	/**
+	 * @return the isOrdered
+	 */
+	@DynamoDBAttribute(attributeName="IsOrdered")
+	public int getIsOrdered() {
+		return isOrdered;
+	}
+
+	/**
+	 * @param isOrdered the isOrdered to set
+	 */
+	public void setIsOrdered(int isOrdered) {
+		this.isOrdered = isOrdered;
 	}
 }

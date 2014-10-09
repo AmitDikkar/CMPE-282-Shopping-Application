@@ -15,6 +15,8 @@ public class AddToCartForm {
 	
 	public int quantity;
 	
+	public int isOrdered;
+	
 	/**
 	 * @return the productId
 	 */
@@ -50,5 +52,17 @@ public class AddToCartForm {
 	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	/**
+	 * @return the isOrdred
+	 */
+	public int getIsOrdered() {
+		return isOrdered;
+	}
+	/**
+	 * @param isOrdred the isOrdred to set
+	 */
+	public void setIsOrdred(int isOrdered) {
+		this.isOrdered = isOrdered;
 	}
 }

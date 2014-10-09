@@ -33,11 +33,27 @@ public class CartViewController {
 		System.out.println("Inside /cart GET");
 		System.out.println("user id is: " + userId);
 		
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity("http://localhost:8080/app/" + "api/cart/"+userId, CartItem[].class);
-		CartItem[] cartItems = receivedList.getBody();
-		System.out.println("Below are the cart items of " + userId + " user");
-		//add all prices
+		CartItem[] cartItems = requestCartItems(userId);
+		
+		float ultimateTotal = getUltimateTotal(cartItems); 
+		
+		System.out.println("Ultimate total is: " + ultimateTotal);
+		model.addAttribute("listOfCartItems", cartItems);
+		model.addAttribute("ultimateTotal", ultimateTotal);
+		return "cart";
+	}
+	
+	@RequestMapping(value="/reviewOrder", method = RequestMethod.GET)
+	public String reviewOrder(@RequestParam(value="userId", required=true) int userId, Model model){
+		System.out.println("Inside /app/reviewOrder, user Id received is: " + userId);
+		CartItem[] cartItems = requestCartItems(userId);
+		float ultimateTotal = getUltimateTotal(cartItems);
+		model.addAttribute("listOfCartItems", cartItems);
+		model.addAttribute("ultimateTotal", ultimateTotal);
+		return "review_order";
+	}
+	
+	private float getUltimateTotal(CartItem[] cartItems) {
 		float ultimateTotal = 0;
 		for(CartItem item : cartItems){
 			System.out.println("Cart Item:");
@@ -46,9 +62,13 @@ public class CartViewController {
 			System.out.println("Total Price is: " + item.getTotalPrice());
 			ultimateTotal = ultimateTotal + item.getTotalPrice();
 		}
-		System.out.println("Ultimate total is: " + ultimateTotal);
-		model.addAttribute("listOfCartItems", cartItems);
-		model.addAttribute("ultimateTotal", ultimateTotal);
-		return "cart";
+		return ultimateTotal;
+	}
+
+	private CartItem[] requestCartItems(int userId) {
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity("http://localhost:8080/app/" + "api/cart/"+userId, CartItem[].class);
+		CartItem[] cartItems = receivedList.getBody();
+		return cartItems;
 	}
 }

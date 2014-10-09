@@ -21,6 +21,7 @@ import com.shopping.database.RdsConnection;
 import com.shopping.database.UserTable;
 import com.shopping.domains.users.LoginForm;
 import com.shopping.domains.users.RegistrationForm;
+import com.shopping.dto.ShipmentForm;
 import com.shopping.dto.User;
 
 /**
@@ -78,5 +79,11 @@ public class UserController {
 			System.out.println("Yes, user is authentic");
 			return new ResponseEntity<String>(HttpStatus.OK);
 		}
+	}
+	
+	@RequestMapping(value="/shipping", method = RequestMethod.POST)
+	public ResponseEntity<ShipmentForm> shipProdcuct(@RequestBody ShipmentForm shippingDetails){
+		System.out.println("Shipping order is received");
+		return new ResponseEntity<ShipmentForm>(shippingDetails, HttpStatus.CREATED);
 	}
 }

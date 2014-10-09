@@ -1,0 +1,197 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"/>
+<title>Bootshop online Shopping cart</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content=""/>
+<meta name="author" content=""/>
+<!-- Bootstrap style -->
+<link id="callCss" rel="stylesheet" href="resources/themes/bootshop/bootstrap.min.css" media="screen" />
+<link href="resources/themes/css/base.css" rel="stylesheet" media="screen" />
+<!-- Bootstrap style responsive -->
+<link href="resources/themes/css/bootstrap-responsive.min.css" rel="stylesheet" />
+<link href="resources/themes/css/font-awesome.css" rel="stylesheet" type="text/css" />
+<!-- Google-code-prettify -->
+<link href="resources/themes/js/google-code-prettify/prettify.css" rel="stylesheet" />
+<!-- fav and touch icons -->
+<link rel="shortcut icon" href="resources/themes/images/ico/favicon.ico"></link>
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="resources/themes/images/ico/apple-touch-icon-144-precomposed.png"></link>
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="resources/themes/images/ico/apple-touch-icon-114-precomposed.png"></link>
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="resources/themes/images/ico/apple-touch-icon-72-precomposed.png"></link>
+<link rel="apple-touch-icon-precomposed" href="resources/themes/images/ico/apple-touch-icon-57-precomposed.png"></link>
+<style type="text/css" id="enject"></style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+   $(document).ready(function() {
+	   $.fn.serializeObject = function()
+	   {
+	      var o = {};
+	      var a = this.serializeArray();
+	      $.each(a, function() {
+	          if (o[this.name]) {
+	              if (!o[this.name].push) {
+	                  o[this.name] = [o[this.name]];
+	              }
+	              o[this.name].push(this.value || '');
+	          } else {
+	              o[this.name] = this.value || '';
+	          }
+	      });
+	      return o;
+	   };
+	   
+ 	   $("form#placeOrder").submit(function(event) {
+		   event.preventDefault();
+		   alert("triggered");
+		    var data = (JSON.stringify($(this).serializeObject()));
+		   alert(data);
+ 		   $.ajax({
+			   url:"api/orders",
+			   type:"POST",
+			   data:data,
+			   contentType:"application/json",
+			   dataType:"json",
+			   success: function(){
+				   //TODO: need to redirect on status page.
+				  window.location = "orderSuccess";
+			   },
+			   error: function(errMsg){
+				   alert("Sorry, we  can not place the order at this time. Please try again later");
+			   }
+			 });
+	   });
+   });
+</script>
+</head>
+
+<body>
+	 <div th:include="layout :: topper"></div>
+	 <div id="mainBody">
+		<div class="container">
+			<div class="row">
+				<div th:include="layout :: sidebar"></div>
+				<!-- *************************Main body******************* -->
+				<div class="span9">
+				    <ul class="breadcrumb">
+						<li><a href="/">Home</a> <span class="divider">/</span></li>
+						<li><a href="/cart?id=1">Cart</a> <span class="divider">/</span></li>
+						<li class="active"> Review Order</li>
+				    </ul>
+					<h3>  Your Order [ <small th:text="${#lists.size(listOfCartItems)} + ' Item(s)'">3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
+					<hr class="soft"/>		
+							
+					<table class="table table-bordered">
+				              <thead>
+				                <tr>
+				                  <th>Product</th>
+				                  <th>Description</th>
+				                  
+								  <th>Price</th>
+				                  <th>Discount</th>
+				                  <th>Tax</th>
+				                  <th>Total</th>
+								</tr>
+				              </thead>
+				              <tbody>
+				                <tr th:each="cartItem, iterStat : ${listOfCartItems}">
+				                  <td> <img width="60" src="resources/themes/images/products/4.jpg" alt=""/></td>
+				                  <td th:text="${cartItem.product.name}" >MASSA AST<br/>Color : black, Material : metal</td>
+								  
+				                  <td th:text="${cartItem.totalPrice}">$120.00</td>
+				                  <td>$00.00</td>
+				                  <td>$00.00</td>
+				                  <td th:text="${cartItem.totalPrice}">$110.00</td>
+				                </tr>
+								<!-- <tr>
+				                  <td> <img width="60" src="resources/themes/images/products/8.jpg" alt=""/></td>
+				                  <td>MASSA AST<br/>Color : black, Material : metal</td>
+								  
+				                  <td>$7.00</td>
+				                  <td>00.00</td>
+				                  <td>$1.00</td>
+				                  <td>$8.00</td>
+				                </tr>
+								<tr>
+				                  <td> <img width="60" src="resources/themes/images/products/3.jpg" alt=""/></td>
+				                  <td>MASSA AST<br/>Color : black, Material : metal</td>
+								  
+				                  <td>$120.00</td>
+				                  <td>$25.00</td>
+				                  <td>$15.00</td>
+				                  <td>$110.00</td>
+				                </tr>
+								-->
+				                <tr>
+				                  <td colspan="6" style="text-align:right">Total Price:	</td>
+				                  <td th:text="${ultimateTotal}"> $228.00</td>
+				                </tr>
+								 <tr>
+				                  <td colspan="6" style="text-align:right">Total Discount:	</td>
+				                  <td> $00.00</td>
+				                </tr>
+				                 <tr>
+				                  <td colspan="6" style="text-align:right">Total Tax:	</td>
+				                  <td> $00.00</td>
+				                </tr>
+								 <tr>
+				                  <td colspan="6" style="text-align:right"><strong th:text="'Total ($' + ${ultimateTotal} + ' - $00 + $00' ">TOTAL ($228 - $50 + $31) =</strong></td>
+				                  <td class="label label-important" style="display:block"> <strong th:text="${ultimateTotal}"> $155.00 </strong></td>
+				                </tr>
+						 	</tbody>
+				            </table>
+						
+							<table class="table table-bordered">
+							 <tr><th>Enter Billing Details</th></tr>
+							 <tr> 
+							 <td>
+								<form class="form-horizontal" id="placeOrder" name="placeOrder" method="POST" action="api/orders">
+								  <div class="control-group">
+									<label class="control-label" for="accountHolderName">Account Holder's Name</label>
+									<div class="controls">
+									  <input type="text" id="accountHolderName" name="accountHolderName" placeholder="Name"/>
+									</div>
+								  </div>
+								  <div class="control-group">
+									<label class="control-label" for="cardNumber">Credit/Debit Card Number</label>
+									<div class="controls">
+									  <input type="text" id="cardNumber" name="cardNumber" placeholder="Card Number"/>
+									</div>
+								  </div>
+								  <div class="control-group">
+									<label class="control-label" for="pin">Pin</label>
+									<div class="controls">
+									  <input type="password" id="pin" name="pin" placeholder="CVV number"/>
+									</div>
+								  </div>
+								  <div class="control-group">
+									<label class="control-label" for="expiryDate">Expiry (mm/yy)</label>
+									<div class="controls">
+									  <input type="text" id="expiryDate" name="expiryDate" placeholder="Expiry of Card"/>
+									</div>
+								  </div>
+								  <div class="control-group">
+									<label class="control-label" for="zipCode">Post Code/ Zipcode </label>
+									<div class="controls">
+									  <input type="text" id="zipCode" name="zipCode" placeholder="Zip Code"/>
+									</div>
+								  </div>
+								  <input type="hidden" name="userId" value="1"></input>
+								  <div class="control-group">
+									<div class="controls">
+									  <button type="submit" value="Submit" class="btn">Place Order</button>
+									</div>
+								  </div>
+								</form>				  
+							  </td>
+							  </tr>
+				            </table>		
+					<a href="/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
+				</div>
+				<!-- *************************Main body ends******************* -->
+				</div>
+			</div>
+		</div>
+	 <div th:include="layout :: footer"></div>
+</body>
+</html>
