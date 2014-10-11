@@ -43,20 +43,15 @@
 	   
  	   $("form#login").submit(function(event) {
 		   event.preventDefault();
-		   alert("triggered");
 		    var data = (JSON.stringify($(this).serializeObject()));
-		   alert(data);
  		   $.ajax({
 			   url:"api/login",
 			   type:"POST",
 			   data:data,
 			   contentType:"application/json",
 			   success: function(data){
-				  /* var x = $(data).find("#userId");
-				  alert(x); */
-				  //var obj = jQuery.parseJSON(data);
-				  alert(data.userId);
-				  document.cookie = "userValue="+ data.userId;
+				  document.cookie = "userId=" + data.userId;
+				  document.cookie = "userName=" + data.userName;
 				  window.location = "/app";
 			   },
 			   error: function(errMsg, e, x){
@@ -84,7 +79,7 @@
 					<h3>Login</h3>
 					<p><em th:text="${mainMessage}"></em></p>
 					<table class="table table-bordered">
-							 <tr><th>Enter Login Details</th></tr>
+							 <tr><th>Enter Login Details or <a href="register" style="color: green;">Sign Up here</a></th></tr>
 							 <tr> 
 							 <td>
 								<form class="form-horizontal" action="login" id="login" method="POST">

@@ -26,6 +26,7 @@ import com.shopping.database.RdsConnection;
 import com.shopping.database.UserTable;
 import com.shopping.domains.users.LoginForm;
 import com.shopping.domains.users.RegistrationForm;
+import com.shopping.dto.LayoutData;
 import com.shopping.dto.ShipmentForm;
 import com.shopping.dto.User;
 
@@ -69,25 +70,19 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<ShipmentForm> loginUser(@RequestBody LoginForm loginDetails, Model model, HttpServletResponse response){
+	public ResponseEntity<LayoutData> loginUser(@RequestBody LoginForm loginDetails, Model model, HttpServletResponse response){
 		System.out.println("This is /login POST");
 		System.out.println("Email Address is: " + loginDetails.getInputEmail());
 		System.out.println("Password is: " + loginDetails.getInputPassword());
-		ShipmentForm shipmentForm = new ShipmentForm();
 		UserTable comm = new UserTable();
-		int userId = comm.isAuthentic(loginDetails);
-		if(userId == -1){
-			//model.addAttribute( "auth_message","Authentication Failed");
+		LayoutData commonData = comm.isAuthentic(loginDetails);
+		if(commonData == null){
 			System.out.println("No, user not authentic");
-			shipmentForm.setUserId(50);
-			return new ResponseEntity<ShipmentForm>(shipmentForm, HttpStatus.FORBIDDEN);
+			return new ResponseEntity<LayoutData>(commonData, HttpStatus.FORBIDDEN);
 		}
 		else{
 			System.out.println("Yes, user is authentic");
-			
-			//this id will be added in the cookie
-			shipmentForm.setUserId(userId);
-			return new ResponseEntity<ShipmentForm>(shipmentForm, HttpStatus.OK);
+			return new ResponseEntity<LayoutData>(commonData, HttpStatus.OK);
 		}
 	}
 	

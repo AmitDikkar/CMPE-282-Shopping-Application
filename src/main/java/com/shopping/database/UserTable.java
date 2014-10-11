@@ -11,6 +11,7 @@ import java.sql.Statement;
 import com.mysql.jdbc.PreparedStatement;
 import com.shopping.domains.users.LoginForm;
 import com.shopping.domains.users.RegistrationForm;
+import com.shopping.dto.LayoutData;
 import com.shopping.dto.User;
 
 /**
@@ -74,9 +75,10 @@ public class UserTable {
 	 * @param loginDetails
 	 * @return
 	 */
-	public int isAuthentic(LoginForm loginDetails){
+	public LayoutData isAuthentic(LoginForm loginDetails){
 		
 		System.out.println("Creating Select statement");
+		LayoutData data = new LayoutData();
 		try {
 			statment = conn.createStatement();
 			
@@ -90,15 +92,18 @@ public class UserTable {
 				System.out.println("Data Retrieve: " + rs.getString(1));
 				System.out.println("Data Retrieve: " + rs.getString(2));
 				//at column 1 in the 'Users' table is 'UserId'. That's why will return that value.
-				return rs.getInt(1);
+				data.setUserId(rs.getInt(1));
+				data.setUserName(rs.getString(2));
+				return data;
 			}
+			//if result set is empty.
 			if (rs.isBeforeFirst()) {
-				return -1;
+				return null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return -1;
+		return null;
 	}
 }

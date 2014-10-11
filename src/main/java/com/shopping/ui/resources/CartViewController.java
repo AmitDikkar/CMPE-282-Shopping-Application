@@ -34,6 +34,9 @@ public class CartViewController {
 		System.out.println("Inside /cart GET");
 		System.out.println("user id is received in cookie is : " + userId);
 		
+		if(userId == -1){
+			return "redirect:/login";
+		}
 		CartItem[] cartItems = requestCartItems(userId);
 		
 		float ultimateTotal = getUltimateTotal(cartItems); 
@@ -45,8 +48,13 @@ public class CartViewController {
 	}
 	
 	@RequestMapping(value="/reviewOrder", method = RequestMethod.GET)
-	public String reviewOrder(@RequestParam(value="userId", required=true) int userId, Model model){
+	public String reviewOrder(@CookieValue(value="userId", required=true) int userId, Model model){
 		System.out.println("Inside /app/reviewOrder, user Id received is: " + userId);
+	
+		if(userId == -1){
+			return "redirect:/login";
+		}
+		
 		CartItem[] cartItems = requestCartItems(userId);
 		float ultimateTotal = getUltimateTotal(cartItems);
 		model.addAttribute("listOfCartItems", cartItems);

@@ -21,9 +21,12 @@
 <link rel="apple-touch-icon-precomposed" href="resources/themes/images/ico/apple-touch-icon-57-precomposed.png"></link>
 <style type="text/css" id="enject"></style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+<script type="text/javascript" src="resources/themes/js/myjs.js"></script>
 <script type="text/javascript">
    $(document).ready(function() {
+	   initializeDocument();
+	   $("#userId").val(getCookie("userId"));
+	   
 	   $.fn.serializeObject = function()
 	   {
 	      var o = {};
@@ -43,9 +46,7 @@
 	   
  	   $("form#placeOrder").submit(function(event) {
 		   event.preventDefault();
-		   alert("triggered");
 		    var data = (JSON.stringify($(this).serializeObject()));
-		   alert(data);
  		   $.ajax({
 			   url:"api/orders",
 			   type:"POST",
@@ -176,7 +177,7 @@
 									  <input type="text" id="zipCode" name="zipCode" placeholder="Zip Code"/>
 									</div>
 								  </div>
-								  <input type="hidden" name="userId" value="1"></input>
+								  <input type="hidden" name="userId" id="userId" value="3"></input>
 								  <div class="control-group">
 									<div class="controls">
 									  <button type="submit" value="Submit" class="btn">Place Order</button>

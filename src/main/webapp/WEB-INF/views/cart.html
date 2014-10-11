@@ -21,9 +21,11 @@
 <link rel="apple-touch-icon-precomposed" href="resources/themes/images/ico/apple-touch-icon-57-precomposed.png"></link>
 <style type="text/css" id="enject"></style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+<script type="text/javascript" src="resources/themes/js/myjs.js"></script>
 <script type="text/javascript">
    $(document).ready(function() {
+	    initializeDocument();
+		//$("#headerUserName").text(getCookie("userName"));
 	   $.fn.serializeObject = function()
 	   {
 	      var o = {};
@@ -63,7 +65,6 @@
  	   
  	  $(".btn-danger").click(function(event) {
 		   event.preventDefault();
-		   alert($(this).attr("value"));
 		   $.ajax({
 			   url:"api/cart?cartId="+$(this).attr("value"),
 			   type:"DELETE",
@@ -81,7 +82,6 @@
  		  event.preventDefault();
 		   //alert("triggered");
 		   var data = (JSON.stringify($(this).serializeObject()));
-		   alert(data);
  		   $.ajax({
 			   url:"api/shipping",
 			   type:"POST",
@@ -110,7 +110,7 @@
 				<!-- *************************Main body******************* -->
 				<div class="span9">
 				    <ul class="breadcrumb">
-						<li><a href="index.html">Home</a> <span class="divider">/</span></li>
+						<li><a href="/app">Home</a> <span class="divider">/</span></li>
 						<li class="active"> SHOPPING CART</li>
 				    </ul>
 					<h3>  SHOPPING CART [ <small th:text="${#lists.size(listOfCartItems)} + ' Item(s)'">3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
@@ -130,24 +130,25 @@
 				              </thead>
 				              <tbody>
 				              <tr th:each="cartItem, iterStat : ${listOfCartItems}">
-				                  <td> <img width="60" src="resources/themes/images/products/4.jpg" alt=""/></td>
-				                  <td th:utext="${cartItem.product.name} + '&lt;br /&gt;' + ${cartItem.product.description}" >MASSA AST<br/>Color : black, Material : metal</td>
+				                  <!-- <td> <img width="60" src="resources/themes/images/products/4.jpg" alt=""/></td> -->
+				                  <td th:utext="${cartItem.product.name}">MASSA AST<br/>Color : black, Material : metal</td>
+				                  <td th:utext="${cartItem.product.description}" >MASSA AST<br/>Color : black, Material : metal</td>
 								  <td>
 									<div class="input-append">
-										<input class="span1" style="max-width:34px" id="appendedInputButtons" size="16" type="text" disabled="disabled" th:value="${cartItem.quantity}"/>
-										<form id="'addQuantity' + ${iterStat.count}" class="updateQuantity" name="increaseQuantity" action="api/cart" method="PUT">
+										<input class="span1" style="max-width:34px; float: left;" id="appendedInputButtons" size="16" type="text" disabled="disabled" th:value="${cartItem.quantity}"/>
+										<form style="float: right;" id="'addQuantity' + ${iterStat.count}" class="updateQuantity" name="increaseQuantity" action="api/cart" method="PUT">
 											<input type="hidden" th:id="'addCartId' + ${iterStat.count}" name="cartId" th:value="${cartItem.cartId}"></input>
 											<input type="hidden" th:id="'addUserId' + ${iterStat.count}" name="userId" th:value="${cartItem.userId}"></input>
 											<input type="hidden" th:id="'addAction' + ${iterStat.count}" name="action" th:value="decrease"></input>
 											<button class="btn" type="submit" value="Submit"><i class="icon-minus"></i></button>
 										</form>
-										<form id="'subQuantity' + ${iterStat.count}" class="updateQuantity" name="increaseQuantity" action="api/cart" method="PUT">
+										<form style="float: right;" id="'subQuantity' + ${iterStat.count}" class="updateQuantity" name="increaseQuantity" action="api/cart" method="PUT">
 											<input type="hidden" th:id="'subCartId' + ${iterStat.count}" name="cartId" th:value="${cartItem.cartId}"></input>
 											<input type="hidden" th:id="'subUserId' + ${iterStat.count}" name="userId" th:value="${cartItem.userId}"></input>
 											<input type="hidden" th:id="'subAction' + ${iterStat.count}" name="action" th:value="increase"></input>
 											<button class="btn" type="submit" value="Submit"><i class="icon-plus"></i></button>
 										</form>
-										<button class="btn btn-danger" type="submit" th:value="${cartItem.cartId}" th:id="'delCart' + ${iterStat.count}"><i class="icon-remove icon-white"></i></button>
+										<button style="float: right;" class="btn btn-danger" type="submit" th:value="${cartItem.cartId}" th:id="'delCart' + ${iterStat.count}"><i class="icon-remove icon-white"></i></button>
 									</div>
 								  </td>
 				                  <td th:text="${cartItem.product.price}">$120.00</td>
@@ -231,7 +232,7 @@
 									  <input type="text" id="zipCode" name="zipCode" placeholder="Zip Code"/>
 									</div>
 								  </div>
-								  <input type="hidden" name="userId" value="1"></input>
+								  <input type="hidden" id="userId" name="userId" value="3"></input>
 								  <div class="control-group">
 									<div class="controls">
 									  <button type="submit" value="Submit" class="btn">Confirm </button>
@@ -242,7 +243,7 @@
 							  </tr>
 				            </table>		
 					<a href="/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
-					<a href="reviewOrder?userId=1" class="btn btn-large pull-right">Checkout <i class="icon-arrow-right"></i></a>	
+					<a href="reviewOrder" class="btn btn-large pull-right">Checkout <i class="icon-arrow-right"></i></a>	
 				</div>
 				<!-- *************************Main body ends******************* -->
 				</div>
