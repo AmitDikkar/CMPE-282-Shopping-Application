@@ -35,10 +35,8 @@ public class RdsConnection {
 			System.out.println("Connecting to a selected database...");
 
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
