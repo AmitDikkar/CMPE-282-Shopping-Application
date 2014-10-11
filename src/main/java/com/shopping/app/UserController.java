@@ -3,6 +3,11 @@
  */
 package com.shopping.app;
 
+import java.text.Normalizer.Form;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -64,20 +69,25 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<String> loginUser(@RequestBody LoginForm loginDetails, Model model){
+	public ResponseEntity<ShipmentForm> loginUser(@RequestBody LoginForm loginDetails, Model model, HttpServletResponse response){
 		System.out.println("This is /login POST");
 		System.out.println("Email Address is: " + loginDetails.getInputEmail());
 		System.out.println("Password is: " + loginDetails.getInputPassword());
-		
-		boolean isAuthentic = new UserTable().isAuthentic(loginDetails);
-		if(!isAuthentic){
+		ShipmentForm shipmentForm = new ShipmentForm();
+		UserTable comm = new UserTable();
+		int userId = comm.isAuthentic(loginDetails);
+		if(userId == -1){
 			//model.addAttribute( "auth_message","Authentication Failed");
 			System.out.println("No, user not authentic");
-			return new ResponseEntity<String>("Invalid credentials", HttpStatus.FORBIDDEN);
+			shipmentForm.setUserId(50);
+			return new ResponseEntity<ShipmentForm>(shipmentForm, HttpStatus.FORBIDDEN);
 		}
 		else{
 			System.out.println("Yes, user is authentic");
-			return new ResponseEntity<String>(HttpStatus.OK);
+			
+			//this id will be added in the cookie
+			shipmentForm.setUserId(userId);
+			return new ResponseEntity<ShipmentForm>(shipmentForm, HttpStatus.OK);
 		}
 	}
 	

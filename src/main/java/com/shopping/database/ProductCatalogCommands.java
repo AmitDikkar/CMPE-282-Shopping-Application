@@ -4,6 +4,7 @@
 package com.shopping.database;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.shopping.database.ProductCatalogItem;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -118,6 +119,7 @@ public class ProductCatalogCommands {
 	//Done
 	public void addNewProduct(ProductCatalogItem item){
 		DynamoDBMapper mapper = this.conn.getMapper();
+		item.setId(UUID.randomUUID().getLeastSignificantBits());
 		mapper.save(item);
 	}
 }

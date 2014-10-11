@@ -1,4 +1,4 @@
-﻿<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8"/>
 <title>Bootshop online Shopping cart</title>
@@ -41,22 +41,18 @@
 	      return o;
 	   };
 	   
- 	  $("form#register").submit(function(event){
- 		   event.preventDefault();
- 		   alert("triggered");
+ 	  $("form#newProduct").submit(function(event){
+ 		  event.preventDefault();
+		   //alert("triggered");
 		   var data = (JSON.stringify($(this).serializeObject()));
-		   alert(data);
  		   $.ajax({
-			   url:"api/register",
+			   url:"api/products",
 			   type:"POST",
 			   data:data,
 			   contentType:"application/json",
 			   dataType:"json",
-			   success: function(data, x , y){
-				   alert(data);
-				   alert(x);
-				   alert(y);
-				  window.location = "login";
+			   success: function(){
+				  window.location = "/app";
 			   },
 			   error: function(requestObject, error, errorThrown){
 				   alert(error);
@@ -77,44 +73,56 @@
 				<!-- *************************Main body******************* -->
 				<div class="span9">
 					<ul class="breadcrumb">
-						<li><a href="index.html">Home</a> <span class="divider">/</span></li>
-						<li class="active">Register</li>
+						<li><a href="/">Home</a> <span class="divider">/</span></li>
+						<li class="active">New Product</li>
 					</ul>
-					<h3>Registration</h3>
+					<h3>Add New Product</h3>
 					<table class="table table-bordered">
-							 <tr><th>Enter Your Details</th></tr>
+							 <tr><th>Enter Product Details</th></tr>
 							 <tr> 
 							 <td>
-								<form class="form-horizontal" action="api/register" id="register" method="POST">
+								<form class="form-horizontal" id="newProduct" action="products" method="POST">
 								  <div class="control-group">
-									<label class="control-label" for="inputFirstName">Your First Name</label>
+									<label class="control-label" for="name">Product Name</label>
 									<div class="controls">
-									  <input type="text" id="inputFirstName" name="inputFirstName" placeholder="First Name"/>
+									  <input type="text" id="name" name="name" placeholder="Enter Product Name"/>
 									</div>
 								  </div>
 								  <div class="control-group">
-									<label class="control-label" for="inputLastName">Your Last Name</label>
+									<label class="control-label" for="category">Category</label>
 									<div class="controls">
-									  <input type="text" id="inputLastName" name="inputLastName" placeholder="Last Name"/>
+									 	<select name="category" id="category">
+											<option value="Electronics">Electronics</option>
+											<option value="Computers">Computers</option>
+											<option value="Health and Beauty" >Health and Beauty</option>
+											<option value="Clothes" selected="selected">Clothes</option>
+										</select>
+									  <!-- <input type="text" id="category" name="category" placeholder="Last Name"/> -->
 									</div>
 								  </div>
 								  <div class="control-group">
-									<label class="control-label" for="inputEmail">Email</label>
+									<label class="control-label" for="quantity">Quantity</label>
 									<div class="controls">
-									  <input type="text" id="inputEmail" name="inputEmail" placeholder="Email"/>
+									  <input type="number" id="quantity" name="quantity" placeholder="quantity"/>
 									</div>
 								  </div>
 								  <div class="control-group">
-									<label class="control-label" for="inputPassword">Password</label>
+									<label class="control-label" for="description">Description</label>
 									<div class="controls">
-									  <input type="text" id="inputPassword" name="inputPassword" placeholder="Password"/>
+									  <input type="text" id="description" name="description" placeholder="Description"/>
+									</div>
+								  </div>
+								  <div class="control-group">
+									<label class="control-label" for="price">Price</label>
+									<div class="controls">
+									  <input type="number" id="price" name="price" placeholder="Price"/>
 									</div>
 								  </div>
 									<div class="control-group">
 										<div class="controls">
-<!-- 											<input type="hidden" name="email_create" value="1"/> 
-											<input type="hidden" name="is_new_customer" value="1"/> -->
-											<input class="btn btn-large btn-success" type="submit" value="Submit" />
+											<!-- <input type="hidden" name="email_create" value="1"/>  -->
+											<!-- <input type="hidden" name="is_new_customer" value="1"/> -->
+											<input class="btn btn-large btn-success" type="submit" value="Register" />
 										</div>
 									</div>
 								</form>				  

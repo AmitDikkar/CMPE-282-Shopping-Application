@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.shopping.database.ProductCatalogCommands;
 import com.shopping.database.ProductCatalogItem;
+import org.springframework.web.bind.annotation.CookieValue;
 
 @Controller
 public class HomeViewController {
@@ -23,13 +24,19 @@ public class HomeViewController {
 	 * Returns our main page.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String home(@CookieValue(value = "userValue", defaultValue = "hello") String firstCookie, Locale locale, Model model) {
 		System.out.println("Inside / GET");
+		System.out.println("Received Cookie: " + firstCookie);
 		
 		RestTemplate restTemplate = new RestTemplate();
 		System.out.println("Calling /products GET");
+		ProductCatalogItem[] listOfProducts = null;		
+		//commenting to save database calls while testing.
+		/*
 		ResponseEntity<ProductCatalogItem[]> receivedList = restTemplate.getForEntity("http://localhost:8080/app/" + "api/products", ProductCatalogItem[].class);
 		ProductCatalogItem[] listOfProducts =  receivedList.getBody();
+		*/
+
 		//add products list to model, to display it on UI.
 		model.addAttribute("listOfProducts", listOfProducts);
 		return "index";

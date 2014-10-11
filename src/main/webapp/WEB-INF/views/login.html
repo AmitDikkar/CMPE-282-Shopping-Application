@@ -20,6 +20,53 @@
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="resources/themes/images/ico/apple-touch-icon-72-precomposed.png"></link>
 <link rel="apple-touch-icon-precomposed" href="resources/themes/images/ico/apple-touch-icon-57-precomposed.png"></link>
 <style type="text/css" id="enject"></style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+   $(document).ready(function() {
+	   $.fn.serializeObject = function()
+	   {
+	      var o = {};
+	      var a = this.serializeArray();
+	      $.each(a, function() {
+	          if (o[this.name]) {
+	              if (!o[this.name].push) {
+	                  o[this.name] = [o[this.name]];
+	              }
+	              o[this.name].push(this.value || '');
+	          } else {
+	              o[this.name] = this.value || '';
+	          }
+	      });
+	      return o;
+	   };
+	   
+ 	   $("form#login").submit(function(event) {
+		   event.preventDefault();
+		   alert("triggered");
+		    var data = (JSON.stringify($(this).serializeObject()));
+		   alert(data);
+ 		   $.ajax({
+			   url:"api/login",
+			   type:"POST",
+			   data:data,
+			   contentType:"application/json",
+			   success: function(data){
+				  /* var x = $(data).find("#userId");
+				  alert(x); */
+				  //var obj = jQuery.parseJSON(data);
+				  alert(data.userId);
+				  document.cookie = "userValue="+ data.userId;
+				  window.location = "/app";
+			   },
+			   error: function(errMsg, e, x){
+				   alert("Invalid credentials");
+			   }
+			 });
+	   });
+   });
+</script>
+
 </head>
 
 <body>
@@ -40,7 +87,7 @@
 							 <tr><th>Enter Login Details</th></tr>
 							 <tr> 
 							 <td>
-								<form class="form-horizontal" action="login" method="POST">
+								<form class="form-horizontal" action="login" id="login" method="POST">
 								  <div class="control-group">
 									<label class="control-label" for="inputEmail">Email</label>
 									<div class="controls">
@@ -55,8 +102,8 @@
 								  </div>
 									<div class="control-group">
 										<div class="controls">
-											<input type="hidden" name="email_create" value="1"/> 
-											<input type="hidden" name="is_new_customer" value="1"/>
+<!-- 											<input type="hidden" name="email_create" value="1"/> 
+											<input type="hidden" name="is_new_customer" value="1"/> -->
 											<input class="btn btn-large btn-success" type="submit" value="Login" />
 										</div>
 									</div>

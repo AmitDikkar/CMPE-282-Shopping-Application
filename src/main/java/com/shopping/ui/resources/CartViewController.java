@@ -7,6 +7,7 @@ import org.springframework.asm.util.TraceClassVisitor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,9 +30,9 @@ public class CartViewController {
 	 * @return
 	 */
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
-	public String getCart(@RequestParam (value="id", required=true) int userId, Model model){
+	public String getCart(@CookieValue (value="userId", defaultValue="-1") int userId, Model model){
 		System.out.println("Inside /cart GET");
-		System.out.println("user id is: " + userId);
+		System.out.println("user id is received in cookie is : " + userId);
 		
 		CartItem[] cartItems = requestCartItems(userId);
 		
@@ -53,7 +54,7 @@ public class CartViewController {
 		return "review_order";
 	}
 	
-	private float getUltimateTotal(CartItem[] cartItems) {
+	float getUltimateTotal(CartItem[] cartItems) {
 		float ultimateTotal = 0;
 		for(CartItem item : cartItems){
 			System.out.println("Cart Item:");
@@ -65,7 +66,7 @@ public class CartViewController {
 		return ultimateTotal;
 	}
 
-	private CartItem[] requestCartItems(int userId) {
+	CartItem[] requestCartItems(int userId) {
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity("http://localhost:8080/app/" + "api/cart/"+userId, CartItem[].class);
 		CartItem[] cartItems = receivedList.getBody();

@@ -131,7 +131,7 @@
 				              <tbody>
 				              <tr th:each="cartItem, iterStat : ${listOfCartItems}">
 				                  <td> <img width="60" src="resources/themes/images/products/4.jpg" alt=""/></td>
-				                  <td th:text="${cartItem.product.name}">MASSA AST<br/>Color : black, Material : metal</td>
+				                  <td th:utext="${cartItem.product.name} + '&lt;br /&gt;' + ${cartItem.product.description}" >MASSA AST<br/>Color : black, Material : metal</td>
 								  <td>
 									<div class="input-append">
 										<input class="span1" style="max-width:34px" id="appendedInputButtons" size="16" type="text" disabled="disabled" th:value="${cartItem.quantity}"/>

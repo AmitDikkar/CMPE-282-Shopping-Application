@@ -35,13 +35,14 @@
 						<li><a href="index.html">Home</a> <span class="divider">/</span></li>
 						<li class="active"> SHOPPING CART</li>
 				    </ul>
-					<h3>  ORDER CONFIRMATION [ <small>3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
+					<h3>  ORDER CONFIRMATION <a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
 					<hr class="soft"/>
+					<h4 th:text="${statusTitle}">This is status title</h4>
+					<h5 th:text="${statusDescription}" style="color: green;">This is status title</h5>
+					<hr class="soft" />
 					<table>
-						<tr>
-							<th><p>Order Successful</p></th>
-							<th><p style="color: green;">This is status </p></th>
-						</tr>
+						<tr><th th:text="${statusTitle}">Order Successful</th></tr>
+						<tr style="color: green;" th:text="${statusDescription}"><th>This is status</th></tr>
 					</table>		
 					<a href="/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
 				</div>
@@ -50,14 +51,5 @@
 			</div>
 		</div>
 	 <div th:include="layout :: footer"></div>
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-
 </body>
 </html>

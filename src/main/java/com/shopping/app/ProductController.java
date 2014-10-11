@@ -77,6 +77,15 @@ public class ProductController {
 		}
 	}
 	
+	@RequestMapping(value="/products", method = RequestMethod.POST)
+	public ResponseEntity<ProductCatalogItem> createProduct(@RequestBody ProductCatalogItem newItem, Model model) throws Exception{
+		System.out.println("Inside /api/products POST, new item is: " +newItem.getId());
+		ProductCatalogCommands comm = new ProductCatalogCommands();
+		//no need to check if product already exists, if exists it simply overrides it.
+		//comm.addNewProduct(newItem);
+		return new ResponseEntity<ProductCatalogItem>(newItem, HttpStatus.CREATED);
+	}
+	
 	@RequestMapping(value="/views/timepasspage", method = RequestMethod.GET)
 	public String displayTimePassView(){
 		return "timepasspage";

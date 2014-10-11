@@ -78,7 +78,7 @@
 						<li><a href="/cart?id=1">Cart</a> <span class="divider">/</span></li>
 						<li class="active"> Review Order</li>
 				    </ul>
-					<h3>  Your Order [ <small th:text="${#lists.size(listOfCartItems)} + ' Item(s)'">3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
+					<h3>  Your Previous Orders [ <small th:text="${#lists.size(listOfCartItems)} + ' Item(s)'">3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
 					<hr class="soft"/>		
 							
 					<table class="table table-bordered">
@@ -122,69 +122,7 @@
 				                  <td>$110.00</td>
 				                </tr>
 								-->
-				                <tr>
-				                  <td colspan="6" style="text-align:right">Total Price:	</td>
-				                  <td th:text="${ultimateTotal}"> $228.00</td>
-				                </tr>
-								 <tr>
-				                  <td colspan="6" style="text-align:right">Total Discount:	</td>
-				                  <td> $00.00</td>
-				                </tr>
-				                 <tr>
-				                  <td colspan="6" style="text-align:right">Total Tax:	</td>
-				                  <td> $00.00</td>
-				                </tr>
-								 <tr>
-				                  <td colspan="6" style="text-align:right"><strong th:text="'Total ($' + ${ultimateTotal} + ' - $00 + $00' ">TOTAL ($228 - $50 + $31) =</strong></td>
-				                  <td class="label label-important" style="display:block"> <strong th:text="${ultimateTotal}"> $155.00 </strong></td>
-				                </tr>
 						 	</tbody>
-				            </table>
-						
-							<table class="table table-bordered">
-							 <tr><th>Enter Billing Details</th></tr>
-							 <tr> 
-							 <td>
-								<form class="form-horizontal" id="placeOrder" name="placeOrder" method="POST" action="api/orders">
-								  <div class="control-group">
-									<label class="control-label" for="accountHolderName">Account Holder's Name</label>
-									<div class="controls">
-									  <input type="text" id="accountHolderName" name="accountHolderName" placeholder="Name"/>
-									</div>
-								  </div>
-								  <div class="control-group">
-									<label class="control-label" for="cardNumber">Credit/Debit Card Number</label>
-									<div class="controls">
-									  <input type="text" id="cardNumber" name="cardNumber" placeholder="Card Number"/>
-									</div>
-								  </div>
-								  <div class="control-group">
-									<label class="control-label" for="pin">Pin</label>
-									<div class="controls">
-									  <input type="password" id="pin" name="pin" placeholder="CVV number"/>
-									</div>
-								  </div>
-								  <div class="control-group">
-									<label class="control-label" for="expiryDate">Expiry (mm/yy)</label>
-									<div class="controls">
-									  <input type="text" id="expiryDate" name="expiryDate" placeholder="Expiry of Card"/>
-									</div>
-								  </div>
-								  <div class="control-group">
-									<label class="control-label" for="zipCode">Post Code/ Zipcode </label>
-									<div class="controls">
-									  <input type="text" id="zipCode" name="zipCode" placeholder="Zip Code"/>
-									</div>
-								  </div>
-								  <input type="hidden" name="userId" value="1"></input>
-								  <div class="control-group">
-									<div class="controls">
-									  <button type="submit" value="Submit" class="btn">Place Order</button>
-									</div>
-								  </div>
-								</form>				  
-							  </td>
-							  </tr>
 				            </table>		
 					<a href="/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
 				</div>

@@ -67,13 +67,20 @@ public class UserTable {
 		   }//end try
 	}
 	
-	public boolean isAuthentic(LoginForm loginDetails){
+	
+	/**
+	 * Authenticate the user based on email id and password. 
+	 * If authenticated successfully, return the userId which is auto stored in the RDS table.
+	 * @param loginDetails
+	 * @return
+	 */
+	public int isAuthentic(LoginForm loginDetails){
 		
 		System.out.println("Creating Select statement");
 		try {
 			statment = conn.createStatement();
 			
-			String sql = "SELECT * from "+ TABLE_NAME + " where " + "FirstName=? and LastName=?;";
+			String sql = "SELECT * from "+ TABLE_NAME + " where " + "EmailId=? and Password=?;";
 			java.sql.PreparedStatement selectStatement = conn.prepareStatement(sql);
 			
 			selectStatement.setString(1, loginDetails.getInputEmail());
@@ -82,14 +89,16 @@ public class UserTable {
 			while(rs.next()){
 				System.out.println("Data Retrieve: " + rs.getString(1));
 				System.out.println("Data Retrieve: " + rs.getString(2));
+				//at column 1 in the 'Users' table is 'UserId'. That's why will return that value.
+				return rs.getInt(1);
 			}
 			if (rs.isBeforeFirst()) {
-				return true;
+				return -1;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 }
