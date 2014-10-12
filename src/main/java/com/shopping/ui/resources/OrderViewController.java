@@ -33,7 +33,7 @@ public class OrderViewController {
 
 	private CartItem[] requestOrderedItems(int userId) {
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity("http://localhost:8080/app/" + "api/orders?userId="+userId, CartItem[].class);
+		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity("http://127.0.0.1:8080/app/" + "api/orders?userId="+userId, CartItem[].class);
 		CartItem[] cartItems = receivedList.getBody();
 		return cartItems;
 	}

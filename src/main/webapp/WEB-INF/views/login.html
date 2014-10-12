@@ -52,7 +52,7 @@
 			   success: function(data){
 				  document.cookie = "userId=" + data.userId;
 				  document.cookie = "userName=" + data.userName;
-				  window.location = "/app";
+				  window.location = "/";
 			   },
 			   error: function(errMsg, e, x){
 				   alert("Invalid credentials");

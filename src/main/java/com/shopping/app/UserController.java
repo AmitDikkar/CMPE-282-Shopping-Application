@@ -57,8 +57,8 @@ public class UserController {
 		System.out.println("Last name is: " + registrationDetails.getInputLastName());
 		System.out.println("Email Address is: " + registrationDetails.getInputPassword());
 
-/*		UserTable tb = new UserTable();
-		tb.insertUserRecord(registrationDetails);*/
+		UserTable tb = new UserTable();
+		tb.insertUserRecord(registrationDetails);
 		//model.addAttribute("mainMessage", "You are now registered, please login.");
 		return new ResponseEntity<User>(registrationDetails, HttpStatus.CREATED);
 	}

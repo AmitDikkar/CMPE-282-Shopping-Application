@@ -39,7 +39,7 @@ public class HomeViewController {
 		//ProductCatalogItem[] listOfProducts = null;		
 		//commenting to save database calls while testing.
 		
-		ResponseEntity<ProductCatalogItem[]> receivedList = restTemplate.getForEntity("http://localhost:8080/app/" + "api/products", ProductCatalogItem[].class);
+		ResponseEntity<ProductCatalogItem[]> receivedList = restTemplate.getForEntity("http://127.0.0.1:8080/app/api/products", ProductCatalogItem[].class);
 		ProductCatalogItem[] listOfProducts =  receivedList.getBody();
 		
 

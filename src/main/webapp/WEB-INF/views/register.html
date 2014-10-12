@@ -43,9 +43,7 @@
 	   
  	  $("form#register").submit(function(event){
  		   event.preventDefault();
- 		   alert("triggered");
 		   var data = (JSON.stringify($(this).serializeObject()));
-		   alert(data);
  		   $.ajax({
 			   url:"api/register",
 			   type:"POST",
@@ -53,9 +51,6 @@
 			   contentType:"application/json",
 			   dataType:"json",
 			   success: function(data, x , y){
-				   alert(data);
-				   alert(x);
-				   alert(y);
 				  window.location = "login";
 			   },
 			   error: function(requestObject, error, errorThrown){
