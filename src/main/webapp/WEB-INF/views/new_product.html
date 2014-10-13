@@ -21,9 +21,10 @@
 <link rel="apple-touch-icon-precomposed" href="resources/themes/images/ico/apple-touch-icon-57-precomposed.png"></link>
 <style type="text/css" id="enject"></style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+<script type="text/javascript" src="resources/themes/js/myjs.js"></script>
 <script type="text/javascript">
    $(document).ready(function() {
+	   initializeDocument();
 	   $.fn.serializeObject = function()
 	   {
 	      var o = {};
@@ -52,7 +53,7 @@
 			   contentType:"application/json",
 			   dataType:"json",
 			   success: function(){
-				  window.location = "/app";
+				  window.location = "/";
 			   },
 			   error: function(requestObject, error, errorThrown){
 				   alert(error);
@@ -122,7 +123,7 @@
 										<div class="controls">
 											<!-- <input type="hidden" name="email_create" value="1"/>  -->
 											<!-- <input type="hidden" name="is_new_customer" value="1"/> -->
-											<input class="btn btn-large btn-success" type="submit" value="Register" />
+											<input class="btn btn-large btn-success" type="submit" value="Add Product" />
 										</div>
 									</div>
 								</form>				  

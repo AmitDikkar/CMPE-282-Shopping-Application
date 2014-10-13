@@ -26,7 +26,7 @@ public class ProductViewController {
 		
 		try {
 			RestTemplate restTemplate = new RestTemplate();
-			ResponseEntity<ProductCatalogItem> product = restTemplate.getForEntity("http://127.0.0.1:8080/app/" + "api/products/"+id, ProductCatalogItem.class);
+			ResponseEntity<ProductCatalogItem> product = restTemplate.getForEntity("http://127.0.0.1:8080/api/products/"+id, ProductCatalogItem.class);
 			model.addAttribute("item", product.getBody());
 			System.out.println("Product received from RestTemplate is: " + product.getBody().getName());
 		} catch (Exception e) {

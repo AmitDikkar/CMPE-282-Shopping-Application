@@ -82,7 +82,7 @@ public class ProductController {
 		System.out.println("Inside /api/products POST, new item is: " +newItem.getId());
 		ProductCatalogCommands comm = new ProductCatalogCommands();
 		//no need to check if product already exists, if exists it simply overrides it.
-		//comm.addNewProduct(newItem);
+		comm.addNewProduct(newItem);
 		return new ResponseEntity<ProductCatalogItem>(newItem, HttpStatus.CREATED);
 	}
 	

@@ -46,7 +46,11 @@
 	   
  	   $("form#placeOrder").submit(function(event) {
 		   event.preventDefault();
-		    var data = (JSON.stringify($(this).serializeObject()));
+		   /* var cardValue = $("#cardNumber").val();
+		   if(cardValue.length < 16 || cardValue.length > 16){
+			   alert("Card number is invalid, Please make sure it is 16 digit; all numbers");
+		   }
+		     */var data = (JSON.stringify($(this).serializeObject()));
  		   $.ajax({
 			   url:"api/orders",
 			   type:"POST",

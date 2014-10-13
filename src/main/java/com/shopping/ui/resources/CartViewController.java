@@ -76,7 +76,7 @@ public class CartViewController {
 
 	CartItem[] requestCartItems(int userId) {
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity("http://127.0.0.1:8080/app/" + "api/cart/"+userId, CartItem[].class);
+		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity("http://127.0.0.1:8080/" + "api/cart/"+userId, CartItem[].class);
 		CartItem[] cartItems = receivedList.getBody();
 		return cartItems;
 	}
