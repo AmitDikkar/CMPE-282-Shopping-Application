@@ -16,11 +16,14 @@ public class RdsConnection {
 
 	// JDBC driver name and database URL
 	   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	   static final String DB_URL = "jdbc:mysql://cmpe282.ch5k92keofxy.us-west-2.rds.amazonaws.com:3306/mydb";
-
+	   //static final String DB_URL = "jdbc:mysql://cmpe282.ch5k92keofxy.us-west-2.rds.amazonaws.com:3306/mydb";
+	   static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/mydb";
 	   //  Database credentials
-	   static final String USER = "amitdikkar";
+	   /*static final String USER = "amitdikkar";
 	   static final String PASS = "amitdikkar";
+	   */
+	   static final String USER = "root";
+	   static final String PASS = "root";
 	   
 	   Connection conn = null;
 	   Statement stmt = null;

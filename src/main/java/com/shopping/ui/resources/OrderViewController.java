@@ -1,5 +1,6 @@
 package com.shopping.ui.resources;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,10 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import com.shopping.config.DevConfiguration;
 import com.shopping.database.CartItem;
+import com.shopping.database.DummyCartItem;
 
 @Controller
 public class OrderViewController {
+	
+	@Autowired DevConfiguration conf;
 	
 	//get list of orders that user has placed so far
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
@@ -24,17 +29,19 @@ public class OrderViewController {
 		}
 		
 		CartViewController cc = new CartViewController();
-		CartItem[] orderedItems = requestOrderedItems(userId);
-		float ultimateTotal = cc.getUltimateTotal(orderedItems); 
+		DummyCartItem[] orderedItems = requestOrderedItems(userId);
+		
+		//float ultimateTotal = cc.getUltimateTotal(orderedItems); 
 		model.addAttribute("listOfCartItems", orderedItems);
-		model.addAttribute("ultimateTotal", ultimateTotal);
+		//model.addAttribute("ultimateTotal", ultimateTotal);
+		model.addAttribute("ultimateTotal", 0);
 		return "myorders";
 	}
 
-	private CartItem[] requestOrderedItems(int userId) {
+	private DummyCartItem[] requestOrderedItems(int userId) {
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity("http://127.0.0.1:8080/api/orders?userId="+userId, CartItem[].class);
-		CartItem[] cartItems = receivedList.getBody();
+		ResponseEntity<DummyCartItem[]> receivedList = restTemplate.getForEntity(conf.getBASE_URL() + "/api/orders?userId="+userId, DummyCartItem[].class);
+		DummyCartItem[] cartItems = receivedList.getBody();
 		return cartItems;
 	}
 }

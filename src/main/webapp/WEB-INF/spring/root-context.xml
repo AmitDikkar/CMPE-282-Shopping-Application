@@ -4,5 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+	<bean class="com.shopping.config.DevConfiguration">
+    	<property name="supportEmail" value="support@mycompany.com"/>
+    	<property name="BASE_URL" value="http://127.0.0.1:8080/app"/>
+    	<property name="MONGODB_CONNECTION_STRING" value="mongodb://team_282:team_282@ds053310.mongolab.com:53310/cmpe_282"/>
+  	</bean>
 </beans>

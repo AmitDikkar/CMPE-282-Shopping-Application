@@ -21,7 +21,7 @@
 <link rel="apple-touch-icon-precomposed" href="resources/themes/images/ico/apple-touch-icon-57-precomposed.png"></link>
 <style type="text/css" id="enject"></style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+<link href="resources/themes/css/stylesheet.css" rel="stylesheet" />
 <script type="text/javascript">
    $(document).ready(function() {
 	   $.fn.serializeObject = function()
@@ -43,7 +43,6 @@
 	   
  	   $("form#placeOrder").submit(function(event) {
 		   event.preventDefault();
-		   alert("triggered");
 		    var data = (JSON.stringify($(this).serializeObject()));
 		   alert(data);
  		   $.ajax({
@@ -61,6 +60,30 @@
 			   }
 			 });
 	   });
+ 	   
+ 	   
+ 	  $('input[type=radio]').click(function(){
+ 		 $(this).closest("form").submit(); 
+ 	  });
+ 	  
+ 	  $("form#rate").submit(function(event) {
+ 		 event.preventDefault();
+ 			var data = (JSON.stringify($(this).serializeObject()));
+		   	alert(data);
+		    $.ajax({
+				   url:"api/review",
+				   type:"POST",
+				   data:data,
+				   contentType:"application/json",
+				   //dataType:"json",
+				   success: function(message, err){
+					   //TODO: do nothing
+				   },
+				   error: function(errMsg){
+					   alert("Sorry, we  can not place the order at this time. Please try again later");
+				   }
+				 });
+ 	  });
    });
 </script>
 </head>
@@ -88,20 +111,49 @@
 				                  <th>Description</th>
 				                  
 								  <th>Price</th>
-				                  <th>Discount</th>
+				                  <!-- <th>Discount</th>
 				                  <th>Tax</th>
-				                  <th>Total</th>
+				                   -->
+				                   <th>Ratings</th>
+				                   <th>Total</th>
 								</tr>
 				              </thead>
 				              <tbody>
-				                <tr th:each="cartItem, iterStat : ${listOfCartItems}">
+				                <tr th:each="cartItem,iterStat : ${listOfCartItems}">
 				                  <td> <img width="60" src="resources/themes/images/products/4.jpg" alt=""/></td>
 				                  <td th:utext="${cartItem.product.name} + '&lt;br /&gt;' + ${cartItem.product.description}" >MASSA AST<br/>Color : black, Material : metal</td>
 								  
 				                  <td th:text="${cartItem.totalPrice}">$120.00</td>
-				                  <td>$00.00</td>
-				                  <td>$00.00</td>
-				                  <td th:text="${cartItem.totalPrice}">$110.00</td>
+				                  <!-- <td>$00.00</td>
+				                  <td>$00.00</td> -->
+								<td>
+									<form class="form-horizontal" action="/api/review" id="rate" method="POST">
+										<input type="hidden" th:value="cartIte0m.id"></input>
+										<div class="starRating">
+											<div>
+												<div>
+													<div>
+														<div>
+															<input id="rating1" type="radio" name="rating" value="1" />
+															<label for="rating1"><span>1</span></label>
+														</div>
+														<input id="rating2" type="radio" name="rating" value="2" />
+														<label for="rating2"><span>2</span></label>
+													</div>
+													<input id="rating3" type="radio" name="rating" value="3" />
+													<label for="rating3"><span>3</span></label>
+												</div>
+												<input id="rating4" type="radio" name="rating" value="4" />
+												<label for="rating4"><span>4</span></label>
+											</div>
+											<input id="rating5" type="radio" name="rating" value="5" />
+											<label for="rating5"><span>5</span></label>
+										</div>
+										<input type="hidden" name="cartId" th:value="${cartItem.CartId}" />
+										<input type="hidden" name="productId" th:value="${cartItem.product.id}" />
+									</form>
+								</td>
+								<td th:text="${cartItem.totalPrice}">$110.00</td>
 				                </tr>
 								<!-- <tr>
 				                  <td> <img width="60" src="resources/themes/images/products/8.jpg" alt=""/></td>

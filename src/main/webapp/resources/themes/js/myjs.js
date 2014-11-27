@@ -50,5 +50,5 @@ $(document).ready(function(){
 			eraseCookie("userName");
 		}
 		window.location = "login";
-	});	
+	});
 });

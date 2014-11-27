@@ -3,6 +3,7 @@
  */
 package com.shopping.app;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.shopping.database.CartCommands;
 import com.shopping.database.CartItem;
+import com.shopping.database.DummyCartItem;
+import com.shopping.database.DumpyProductCatalogItem;
+import com.shopping.database.ProductCatalogItem;
 import com.shopping.dto.PlaceOrderForm;
 
 /**
@@ -39,32 +43,49 @@ public class OrderController {
 	
 	//returns list of items that is in the order items into order.
 	@RequestMapping(value="/orders", method=RequestMethod.GET)
-	public ResponseEntity<List<CartItem>> getOrders(@RequestParam(value="userId", required=true) int userId, Model model){
+	public ResponseEntity<List<DummyCartItem>> getOrders(@RequestParam(value="userId", required=true) int userId, Model model){
 		System.out.println("Inside /api/orders GET");
 		System.out.println("User id received is: " + userId);
 		CartCommands comm = null;
 		try {
-			comm = new CartCommands();
-			List<CartItem> listOfOrders = comm.getOrderItemsFromUserId(userId);
-			return new ResponseEntity<List<CartItem>>(listOfOrders, HttpStatus.OK);
+			//TODO remove after adding database call.
+			//comm = new CartCommands();
+			//List<CartItem> listOfOrders = comm.getOrderItemsFromUserId(userId);
+			
+			List<DummyCartItem> listOfOrders = addDummyCartItems();
+			return new ResponseEntity<List<DummyCartItem>>(listOfOrders, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<List<CartItem>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<List<DummyCartItem>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	@RequestMapping(value="/orders", method=RequestMethod.POST)
-	public ResponseEntity<List<CartItem>> placeOrder(@RequestBody PlaceOrderForm placeOrderForm, Model model){
+	public ResponseEntity<List<DummyCartItem>> placeOrder(@RequestBody PlaceOrderForm placeOrderForm, Model model){
 		System.out.println("Inside /api/orders POST");
 		System.out.println("User id received is: " + placeOrderForm.getUserId());
 		CartCommands comm = null;
 		try {
 			comm = new CartCommands();
-			List<CartItem> listOfOrders = comm.placeOrder(placeOrderForm.getUserId());
-			return new ResponseEntity<List<CartItem>>(listOfOrders, HttpStatus.CREATED);
+			//List<CartItem> listOfOrders = comm.placeOrder(placeOrderForm.getUserId());
+			List<DummyCartItem> listOfOrders = addDummyCartItems();
+			return new ResponseEntity<List<DummyCartItem>>(listOfOrders, HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<List<CartItem>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<List<DummyCartItem>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	private List<DummyCartItem> addDummyCartItems(){
+		DummyCartItem c = new DummyCartItem();
+		DumpyProductCatalogItem p = new DumpyProductCatalogItem();
+		p.setId((long) 1);
+		p.setName("item-1");
+		p.setPrice(10);
+		c.setCartId((long) 1);
+		c.setProduct(p);
+		List<DummyCartItem> ls = new ArrayList<DummyCartItem>();
+		ls.add(c);
+		return ls;
 	}
 }

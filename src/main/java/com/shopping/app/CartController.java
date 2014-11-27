@@ -3,6 +3,7 @@
  */
 package com.shopping.app;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.shoppin.dao.CartDAO;
 import com.shopping.database.CartCommands;
 import com.shopping.database.CartItem;
+import com.shopping.database.ProductCatalogItem;
 import com.shopping.dto.AddToCartForm;
 import com.shopping.dto.UpdateCartForm;
 
@@ -35,6 +38,7 @@ public class CartController {
 	private final String CART_INCREASE_ACTION = "increase";
 	private final String CART_DECREASE_ACTION = "decrease";
 	
+	private CartDAO cartDao = new CartDAO();
 	/**
 	 * Returns all cart items added by the user.
 	 * GET: /api/cart/userId
@@ -50,8 +54,13 @@ public class CartController {
 		
 		CartCommands comm = null;
 		try {
-			comm = new CartCommands();
+			//TODO uncomment below after connecting to database.
+			/*comm = new CartCommands();
 			List<CartItem> listOfItems = comm.getCartItemsFromUserId(userId);
+			*/
+			
+			List<CartItem> listOfItems = addDummyCartItems(); 
+			
 			return new ResponseEntity<List<CartItem>>(listOfItems, HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,8 +83,11 @@ public class CartController {
 		System.out.println("Product id: " + cartItem.getProductId());
 		CartCommands comm = null;
 		try {
-			comm = new CartCommands();
-			comm.saveCartItem(cartItem);
+			//TODO: un comment below after database connection.
+			/*comm = new CartCommands();
+			comm.saveCartItem(cartItem);*/
+			cartDao.insert(cartItem.getProductId(), cartItem.getUserId(), cartItem.quantity);
+			
 			System.out.println("returning success");
 			return new ResponseEntity<String>("Item Added", HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -124,5 +136,17 @@ public class CartController {
 			return new ResponseEntity<CartItem>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<CartItem>(item, HttpStatus.OK);
+	}
+	
+	private List<CartItem> addDummyCartItems(){
+		CartItem item1 = new CartItem();
+		item1.setProductId((long) 1);
+		ProductCatalogItem p = new ProductCatalogItem();
+		p.setName("item-1");
+		p.setPrice(10);
+		item1.setProduct(p);
+		List<CartItem> ls = new ArrayList<CartItem>();
+		ls.add(item1);
+		return ls;
 	}
 }

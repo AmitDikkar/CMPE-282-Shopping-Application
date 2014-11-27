@@ -6,7 +6,7 @@
 	<artifactId>app</artifactId>
 	<name>Cmpe-282-ShoppingApplication</name>
 	<packaging>war</packaging>
-	<version>1.0.3-BUILD-SNAPSHOT</version>
+	<version>1.0.6-BUILD-SNAPSHOT</version>
 	<properties>
 		<java-version>1.6</java-version>
 		<org.springframework-version>3.2.5.RELEASE</org.springframework-version>
@@ -83,6 +83,28 @@
 			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- Jongo-Mongo Dependancies -->
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>2.3.3</version>
+	</dependency>
+	<dependency>
+		<groupId>de.undercouch</groupId>
+		<artifactId>bson4jackson</artifactId>
+		<version>2.4.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.jongo</groupId>
+		<artifactId>jongo</artifactId>
+		<version>1.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.mongodb</groupId>
+		<artifactId>mongo-java-driver</artifactId>
+		<version>2.12.0</version>
+	</dependency>
+	<!-- Mongo-Jong Dependancies ends -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>

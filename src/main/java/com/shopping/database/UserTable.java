@@ -101,9 +101,10 @@ public class UserTable {
 			while(rs.next()){
 				System.out.println("Data Retrieve: " + rs.getString(1));
 				System.out.println("Data Retrieve: " + rs.getString(2));
+				
 				//at column 1 in the 'Users' table is 'UserId'. That's why will return that value.
 				data.setUserId(rs.getInt(1));
-				data.setUserName(rs.getString(2));
+				data.setUserName(rs.getString(3));
 				updateLastLoginTime(rs.getInt(1));
 				return data;
 			}

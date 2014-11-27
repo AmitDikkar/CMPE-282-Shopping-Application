@@ -7,15 +7,13 @@ package com.shopping.database;
  * @author Amit
  *
  */
-public class ProductCatalogItem {
-
+public class DumpyProductCatalogItem {
 	private Long id;
 	private String name;
 	private String category;
 	private String description;
-	private double price;
+	private Integer price;
 	private Integer quantity;
-	
 	/**
 	 * @return the id
 	 */
@@ -67,13 +65,13 @@ public class ProductCatalogItem {
 	/**
 	 * @return the price
 	 */
-	public double getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 	/**
 	 * @param price the price to set
 	 */
-	public void setPrice(double price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 	/**
@@ -88,15 +86,4 @@ public class ProductCatalogItem {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-	
-	/* Decrements quantity of the product.*/
-	public void decrementQuantity() {
-		quantity = quantity - 1;
-	}
-	
-	/* Increments quantity of the product.*/
-	public void incrementQuantity() {
-		quantity = quantity + 1;
-	}	
 }
-

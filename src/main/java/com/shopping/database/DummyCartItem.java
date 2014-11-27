@@ -3,19 +3,11 @@
  */
 package com.shopping.database;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-
 /**
  * @author Amit
  *
  */
-@DynamoDBTable(tableName="Cart")
-public class CartItem {
-
+public class DummyCartItem {
 	private int userId;
 	
 	private Long cartId;
@@ -24,15 +16,15 @@ public class CartItem {
 	
 	private int quantity;
 
-	private double totalPrice;
+	private float totalPrice;
 	
-	private ProductCatalogItem product;
+	private DumpyProductCatalogItem product;
 	
 	private int isOrdered;
+
 	/**
 	 * @return the userId
 	 */
-	@DynamoDBHashKey(attributeName="UserId")
 	public int getUserId() {
 		return userId;
 	}
@@ -47,7 +39,6 @@ public class CartItem {
 	/**
 	 * @return the cartId
 	 */
-	@DynamoDBRangeKey(attributeName="CartId")
 	public Long getCartId() {
 		return cartId;
 	}
@@ -62,7 +53,6 @@ public class CartItem {
 	/**
 	 * @return the productId
 	 */
-	@DynamoDBAttribute(attributeName="ProductId")
 	public Long getProductId() {
 		return productId;
 	}
@@ -71,20 +61,12 @@ public class CartItem {
 	 * @param productId the productId to set
 	 */
 	public void setProductId(Long productId) {
-		System.out.println("setter");
 		this.productId = productId;
-		try {
-			//ProductCatalogCommands comm = new ProductCatalogCommands();
-			//this.product = comm.getProductItemById(this.productId);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
 	}
 
 	/**
 	 * @return the quantity
 	 */
-	@DynamoDBAttribute(attributeName="Quantity")
 	public int getQuantity() {
 		return quantity;
 	}
@@ -96,19 +78,16 @@ public class CartItem {
 		this.quantity = quantity;
 	}
 
-	@DynamoDBIgnore
-	public double getTotalPrice() {
-		ProductCatalogCommands comm;
-		try {
-			comm = new ProductCatalogCommands();
-			this.totalPrice = comm.getProductItemById(this.productId).getPrice() * this.quantity;
-			System.out.println("Object: Total price value in setter: " + this.totalPrice);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	/**
+	 * @return the totalPrice
+	 */
+	public float getTotalPrice() {
 		return totalPrice;
 	}
 
+	/**
+	 * @param totalPrice the totalPrice to set
+	 */
 	public void setTotalPrice(float totalPrice) {
 		this.totalPrice = totalPrice;
 	}
@@ -116,22 +95,20 @@ public class CartItem {
 	/**
 	 * @return the product
 	 */
-	@DynamoDBIgnore
-	public ProductCatalogItem getProduct() {
+	public DumpyProductCatalogItem getProduct() {
 		return product;
 	}
 
 	/**
 	 * @param product the product to set
 	 */
-	public void setProduct(ProductCatalogItem product) {
+	public void setProduct(DumpyProductCatalogItem product) {
 		this.product = product;
 	}
 
 	/**
 	 * @return the isOrdered
 	 */
-	@DynamoDBAttribute(attributeName="IsOrdered")
 	public int getIsOrdered() {
 		return isOrdered;
 	}

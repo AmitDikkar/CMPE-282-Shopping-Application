@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.shoppin.dao.UserDAO;
 import com.shopping.database.RdsConnection;
 import com.shopping.database.UserTable;
 import com.shopping.domains.users.LoginForm;
@@ -42,41 +43,59 @@ public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+	private UserDAO userDAO = new UserDAO();
 	/**
-	 * Post a registration form and return login page upon success.
+	 * DONE-Post a registration form and return login page upon success.
 	 * @param registrationDetails
 	 * @param model
-	 * @return Registration page
+	 * @return Registered user
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<User> registerUser(@RequestBody User registrationDetails){
-		logger.info("Inside POST /register method");
-		System.out.println("Inside POST /register method");
-		System.out.println("Email Address is: " + registrationDetails.getInputEmail());
-		System.out.println("Name is: " + registrationDetails.getInputFirstName());
-		System.out.println("Last name is: " + registrationDetails.getInputLastName());
-		System.out.println("Email Address is: " + registrationDetails.getInputPassword());
 
-		UserTable tb = new UserTable();
-		tb.insertUserRecord(registrationDetails);
-		//model.addAttribute("mainMessage", "You are now registered, please login.");
+		System.out.println("Inside POST /register method");
+		
+		com.shopping.pojo.User newUser = new com.shopping.pojo.User();
+		newUser.setEmailId(registrationDetails.getInputEmail());
+		newUser.setPassword(registrationDetails.getInputPassword());
+		newUser.setUserId(registrationDetails.getUserId());
+		newUser.setFirstName(registrationDetails.getInputFirstName());
+		newUser.setLastName(registrationDetails.getInputLastName());
+		
+		userDAO.insert(newUser);
+		
 		return new ResponseEntity<User>(registrationDetails, HttpStatus.CREATED);
 	}
 	
 	/**
-	 * Authenticate the user and go back to index page upon success.
+	 * DONE- Authenticate the user and go back to index page upon success.
 	 * @param loginDetails
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<LayoutData> loginUser(@RequestBody LoginForm loginDetails, Model model, HttpServletResponse response){
+		
 		System.out.println("This is /login POST");
-		System.out.println("Email Address is: " + loginDetails.getInputEmail());
+		/*System.out.println("Email Address is: " + loginDetails.getInputEmail());
 		System.out.println("Password is: " + loginDetails.getInputPassword());
-		UserTable comm = new UserTable();
-		LayoutData commonData = comm.isAuthentic(loginDetails);
-		if(commonData == null){
+		*/
+		boolean isAuthentic = userDAO.isAuthentic(loginDetails.getInputEmail(), loginDetails.getInputPassword());
+		
+		System.out.println("is authentic: " + isAuthentic);
+		
+		com.shopping.pojo.User newUser = userDAO.getByEmail(loginDetails.getInputEmail());
+		LayoutData commonData = new LayoutData();
+		
+		if(newUser!=null){
+			commonData.setUserId(newUser.getUserId());
+			commonData.setUserName(newUser.getFirstName());
+		}
+		else{
+			return new ResponseEntity<LayoutData>(HttpStatus.BAD_REQUEST);
+		}
+		
+		if(isAuthentic == false){
 			System.out.println("No, user not authentic");
 			return new ResponseEntity<LayoutData>(commonData, HttpStatus.FORBIDDEN);
 		}

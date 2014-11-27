@@ -1,5 +1,6 @@
 package com.shopping.ui.resources;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import com.shopping.config.DevConfiguration;
 import com.shopping.database.ProductCatalogCommands;
 import com.shopping.database.ProductCatalogItem;
 
 @Controller
 public class ProductViewController {
+
+	@Autowired DevConfiguration conf;
 	
 	//returns prduct details page of the given product id.
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
@@ -26,7 +30,7 @@ public class ProductViewController {
 		
 		try {
 			RestTemplate restTemplate = new RestTemplate();
-			ResponseEntity<ProductCatalogItem> product = restTemplate.getForEntity("http://127.0.0.1:8080/api/products/"+id, ProductCatalogItem.class);
+			ResponseEntity<ProductCatalogItem> product = restTemplate.getForEntity(conf.getBASE_URL()+"/api/products/"+id, ProductCatalogItem.class);
 			model.addAttribute("item", product.getBody());
 			System.out.println("Product received from RestTemplate is: " + product.getBody().getName());
 		} catch (Exception e) {

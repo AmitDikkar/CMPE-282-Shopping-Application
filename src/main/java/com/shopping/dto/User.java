@@ -8,6 +8,9 @@ package com.shopping.dto;
  *
  */
 public class User {
+	
+	private long userId;
+	
 	/* First name of the user */
 	private String inputFirstName;
 	
@@ -74,6 +77,20 @@ public class User {
 	 */
 	public void setInputPassword(String inputPassword) {
 		this.inputPassword = inputPassword;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public long getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 	
 }

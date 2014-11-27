@@ -46,11 +46,12 @@
 	   
  	   $("form#placeOrder").submit(function(event) {
 		   event.preventDefault();
-		   /* var cardValue = $("#cardNumber").val();
-		   if(cardValue.length < 16 || cardValue.length > 16){
-			   alert("Card number is invalid, Please make sure it is 16 digit; all numbers");
+		  var cardValue = $("#cardNumber").val();
+		  alert("value is: " + cardValue);
+		   if(cardValue.length &lt; 16){
+			   alert("Card number is invalid, Please make sure it is exactly of 16 digit; all numbers");
 		   }
-		     */var data = (JSON.stringify($(this).serializeObject()));
+		   var data = (JSON.stringify($(this).serializeObject()));
  		   $.ajax({
 			   url:"api/orders",
 			   type:"POST",

@@ -4,6 +4,7 @@
 package com.shopping.ui.resources;
 
 import org.springframework.asm.util.TraceClassVisitor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import com.shopping.config.DevConfiguration;
 import com.shopping.database.CartItem;
 
 /**
@@ -23,6 +25,8 @@ import com.shopping.database.CartItem;
 @Controller
 public class CartViewController {
 
+	@Autowired DevConfiguration conf;
+	
 	/**
 	 * Returns Cart details page for the particular user.
 	 * @param userId
@@ -32,15 +36,16 @@ public class CartViewController {
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
 	public String getCart(@CookieValue (value="userId", defaultValue="-1") int userId, Model model){
 		System.out.println("Inside /cart GET");
-		System.out.println("user id is received in cookie is : " + userId);
+		System.out.println("**user id is received in cookie is : " + userId);
 		
 		if(userId == -1){
 			return "redirect:/login";
 		}
+		
 		CartItem[] cartItems = requestCartItems(userId);
 		
-		float ultimateTotal = getUltimateTotal(cartItems); 
-		
+		//float ultimateTotal = getUltimateTotal(cartItems); 
+		float ultimateTotal = 0;
 		System.out.println("Ultimate total is: " + ultimateTotal);
 		model.addAttribute("listOfCartItems", cartItems);
 		model.addAttribute("ultimateTotal", ultimateTotal);
@@ -76,7 +81,7 @@ public class CartViewController {
 
 	CartItem[] requestCartItems(int userId) {
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity("http://127.0.0.1:8080/" + "api/cart/"+userId, CartItem[].class);
+		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity(conf.getBASE_URL()+ "/api/cart/"+userId, CartItem[].class);
 		CartItem[] cartItems = receivedList.getBody();
 		return cartItems;
 	}

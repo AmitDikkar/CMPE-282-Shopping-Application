@@ -24,7 +24,6 @@
 
 <script type="text/javascript">
    $(document).ready(function() {
-	   alert("Card number is invalid, Please make sure it is 16 digit; all numbers");
 	   $.fn.serializeObject = function()
 	   {
 	      var o = {};
@@ -43,7 +42,8 @@
 	   };
 	   
  	   $("form#login").submit(function(event) {
-		   event.preventDefault();
+ 		   alert("This is alert");
+ 		   event.preventDefault();
 		    var data = (JSON.stringify($(this).serializeObject()));
  		   $.ajax({
 			   url:"api/login",
@@ -53,7 +53,7 @@
 			   success: function(data){
 				  document.cookie = "userId=" + data.userId;
 				  document.cookie = "userName=" + data.userName;
-				  window.location = "/";
+				  window.location = "/app";
 			   },
 			   error: function(errMsg, e, x){
 				   alert("Invalid credentials");
