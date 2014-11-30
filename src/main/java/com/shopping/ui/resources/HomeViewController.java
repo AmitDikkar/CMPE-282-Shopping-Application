@@ -58,6 +58,13 @@ public class HomeViewController {
 		ProductCatalogItem[] itemBasedRecoProducts =  list_2.getBody();
 		//add products list to model, to display it on UI.
 		
+		ResponseEntity<ProductCatalogItem[]> receivedList = restTemplate.getForEntity(conf.getBASE_URL() +"/api/products", ProductCatalogItem[].class);
+		ProductCatalogItem[] listOfProducts = receivedList.getBody();
+		
+		ProductCatalogItem p = listOfProducts[0];
+		System.out.println("inside homeview controller. list count is: " + listOfProducts.length + " 0the product is: " + p.getId());
+		
+		model.addAttribute("products", listOfProducts);
 		model.addAttribute("userBasedProducts", userBasedRecoProducts);
 		model.addAttribute("itemBasedProducts", itemBasedRecoProducts);
 		

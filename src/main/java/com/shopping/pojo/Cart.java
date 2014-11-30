@@ -4,6 +4,7 @@
 package com.shopping.pojo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -100,16 +101,42 @@ public class Cart {
 	}
 
 	public void addToCart(CartItem cartItem) {
+		
+		//if item already exist do not add a new one. instead increase the quantity.
+		for(int i=0; i< this.cartItems.size(); i++){
+			if(this.cartItems.get(i).getProductId() == cartItem.getProductId()){
+				this.cartItems.get(i).setQuantity(this.cartItems.get(i).getQuantity() + cartItem.getQuantity());
+				computeTotalPrice();
+				return;
+			}
+		}
 		this.cartItems.add(cartItem);
 		computeTotalPrice();
 	}
 
 	private void computeTotalPrice() {
 		double totalPrice = 0;
-		System.out.println("Adding new cart item to the list");
 		for (CartItem item : this.cartItems) {
 			totalPrice += item.totalPrice;
 		}
 		this.totalPrice = totalPrice;
+	}
+
+	public void removeProduct(Long productId) {
+		Iterator<CartItem> itr = this.cartItems.iterator();
+		int i = 0;
+		boolean listUpdated = false;
+		while(itr.hasNext()){
+			if(itr.next().getProductId() == productId){
+				this.cartItems.remove(i);
+				listUpdated = true;
+				break;
+			}
+			i++;
+		}
+		
+		if(listUpdated){
+			computeTotalPrice();	
+		}
 	}
 }

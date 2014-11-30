@@ -50,13 +50,14 @@
 	   $("form#addToCart").submit(function(event) {
 		   event.preventDefault();
 		   var data = (JSON.stringify($(this).serializeObject()));
-		   
+		   alert("add to cart");
 		   $.ajax({
 			   url:"api/cart",
 			   type:"POST",
 			   data:data,
 			   contentType:"application/json",
 			   success: function(){
+				   alert("redirecting");
 				  window.location="cart";
 			   },
 			   error: function(errMsg){
@@ -131,7 +132,7 @@
 							</div>
 						</div> -->
 						<div class="span6">
-							<h3 th:text="${item.name}">Fujifilm FinePix S2950 Digital Camera</h3>
+							<h3 th:text="'Song-' + ${item.id}">Fujifilm FinePix S2950 Digital Camera</h3>
 							<small th:text="${item.description}">- (14MP, 18x Optical Zoom) 3-inch LCD</small>
 							<hr class="soft" />
 							<form class="form-horizontal qtyFrm" id="addToCart" name="formAddToCart" action="api/cart" method="POST">

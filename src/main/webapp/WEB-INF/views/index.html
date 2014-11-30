@@ -44,7 +44,7 @@ $(document).ready(function() {
 						  <div class="thumbnail">
 							<a th:href="@{products(id=${product.id})}"><img src="" alt=""/></a>
 							<div class="caption">
-							  <h5 th:text="${product.name}"><a th:href="@{products(id=${product.id})}">Product name</a></h5>
+							  <h5 th:text="'Song-' + ${product.id}"><a th:href="@{products(id=${product.id})}">Product name</a></h5>
 							  <p th:text="${product.description}"> 
 								Lorem Ipsum is simply dummy text. 
 							  </p>
@@ -123,7 +123,24 @@ $(document).ready(function() {
 						  <div class="thumbnail">
 							<a th:href="@{products(id=${product.id})}"><img src="" alt=""/></a>
 							<div class="caption">
-							  <h5 th:text="${product.name}"><a th:href="@{products(id=${product.id})}">Product name</a></h5>
+							  <h5 th:text="'Song-' + ${product.id}"><a th:href="@{products(id=${product.id})}">Product name</a></h5>
+							  <p th:text="${product.description}"> 
+								Lorem Ipsum is simply dummy text. 
+							  </p>
+							  <h4 style="text-align:center"><a class="btn" th:href="@{products(id=${product.id})}"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#"> View </a> <a class="btn btn-primary" href="#" th:text="'$' + ${product.price}"></a></h4>
+							</div>
+						  </div>
+						</li>
+					</ul>	
+				</div>
+			<div class="span9">
+				<h4>Songs for Sale</h4>
+					  <ul class="thumbnails">
+						<li class="span3" th:each="product : ${products}">
+						  <div class="thumbnail">
+							<a th:href="@{products(id=${product.id})}"><img src="" alt=""/></a>
+							<div class="caption">
+							  <h5 th:text="'Song-' + ${product.id}"><a th:href="@{products(id=${product.id})}">Product name</a></h5>
 							  <p th:text="${product.description}"> 
 								Lorem Ipsum is simply dummy text. 
 							  </p>

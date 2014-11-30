@@ -22,8 +22,11 @@
 <style type="text/css" id="enject"></style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <link href="resources/themes/css/stylesheet.css" rel="stylesheet" />
+<script type="text/javascript" src="resources/themes/js/myjs.js"></script>
+
 <script type="text/javascript">
    $(document).ready(function() {
+	   initializeDocument();
 	   $.fn.serializeObject = function()
 	   {
 	      var o = {};
@@ -101,7 +104,7 @@
 						<li><a href="/cart?id=1">Cart</a> <span class="divider">/</span></li>
 						<li class="active"> Review Order</li>
 				    </ul>
-					<h3>  Your Previous Orders [ <small th:text="${#lists.size(listOfCartItems)} + ' Item(s)'">3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
+					<h3>  Your Previous Orders [ <small th:text="${#lists.size(productList)} + ' Item(s)'">3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
 					<hr class="soft"/>		
 							
 					<table class="table table-bordered">
@@ -119,16 +122,15 @@
 								</tr>
 				              </thead>
 				              <tbody>
-				                <tr th:each="cartItem,iterStat : ${listOfCartItems}">
+				                <tr th:each="product,iterStat : ${productList}">
 				                  <td> <img width="60" src="resources/themes/images/products/4.jpg" alt=""/></td>
-				                  <td th:utext="${cartItem.product.name} + '&lt;br /&gt;' + ${cartItem.product.description}" >MASSA AST<br/>Color : black, Material : metal</td>
+				                  <td th:utext="'song-' + ${product.productId} + '&lt;br /&gt;' + ${product.productDescription}" >MASSA AST<br/>Color : black, Material : metal</td>
 								  
-				                  <td th:text="${cartItem.totalPrice}">$120.00</td>
+				                  <td th:text="${product.price}">$120.00</td>
 				                  <!-- <td>$00.00</td>
 				                  <td>$00.00</td> -->
 								<td>
 									<form class="form-horizontal" action="/api/review" id="rate" method="POST">
-										<input type="hidden" th:value="cartIte0m.id"></input>
 										<div class="starRating">
 											<div>
 												<div>
@@ -149,11 +151,11 @@
 											<input id="rating5" type="radio" name="rating" value="5" />
 											<label for="rating5"><span>5</span></label>
 										</div>
-										<input type="hidden" name="cartId" th:value="${cartItem.CartId}" />
-										<input type="hidden" name="productId" th:value="${cartItem.product.id}" />
+										<input type="hidden" name="productId" th:value="${product.productId}" />
+										<input type="hidden" name="userId" th:value="${userId}" ></input>
 									</form>
 								</td>
-								<td th:text="${cartItem.totalPrice}">$110.00</td>
+								<td th:text="${product.price}">$110.00</td>
 				                </tr>
 								<!-- <tr>
 				                  <td> <img width="60" src="resources/themes/images/products/8.jpg" alt=""/></td>

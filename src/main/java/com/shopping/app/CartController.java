@@ -25,6 +25,7 @@ import com.shopping.database.CartItem;
 import com.shopping.database.ProductCatalogItem;
 import com.shopping.dto.AddToCartForm;
 import com.shopping.dto.UpdateCartForm;
+import com.shopping.pojo.Cart;
 
 /**
  * @author Amit
@@ -39,37 +40,39 @@ public class CartController {
 	private final String CART_DECREASE_ACTION = "decrease";
 	
 	private CartDAO cartDao = new CartDAO();
+	
 	/**
-	 * Returns all cart items added by the user.
+	 * Done - Returns all cart items added by the user.
 	 * GET: /api/cart/userId
 	 * @param userId
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/cart/{userId}", method = RequestMethod.GET)
-	public ResponseEntity<List<CartItem>> getCart(@PathVariable int userId, Model model){
+	public ResponseEntity<Cart> getCart(@PathVariable int userId, Model model){
 		model.addAttribute("serverTime", "This is /register:GET");
 		System.out.println("Inside /cart GET");
 		System.out.println("user id is: " + userId);
 		
-		CartCommands comm = null;
 		try {
-			//TODO uncomment below after connecting to database.
-			/*comm = new CartCommands();
-			List<CartItem> listOfItems = comm.getCartItemsFromUserId(userId);
-			*/
+			Cart cart = cartDao.getCartByUserId(userId);
+			//if cart doesn't exist for the user send NO_CONTENT
+			if(cart == null){
+				System.out.println("cart was null");
+				return new ResponseEntity<Cart>(HttpStatus.NO_CONTENT);
+			}
+			System.out.println("cart retrieved for user: " + cart.getUserId());
+			System.out.println("returned it");
+			return new ResponseEntity<Cart>(cart, HttpStatus.CREATED);
 			
-			List<CartItem> listOfItems = addDummyCartItems(); 
-			
-			return new ResponseEntity<List<CartItem>>(listOfItems, HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<List<CartItem>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Cart>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}	
-	
+	}
+
 	/**
-	 * Adds item to the cart of the user.
+	 * Done - Adds item to the cart of the user.
 	 * POST: /api/cart
 	 * @param request
 	 * @param model
@@ -83,9 +86,6 @@ public class CartController {
 		System.out.println("Product id: " + cartItem.getProductId());
 		CartCommands comm = null;
 		try {
-			//TODO: un comment below after database connection.
-			/*comm = new CartCommands();
-			comm.saveCartItem(cartItem);*/
 			cartDao.insert(cartItem.getProductId(), cartItem.getUserId(), cartItem.quantity);
 			
 			System.out.println("returning success");
@@ -97,14 +97,20 @@ public class CartController {
 		}
 	}
 	
+	/**
+	 * Done-Removing product from the cart.
+	 * @param productId Product to be removed from the cart
+	 * @param userId user of this cart. 
+	 * @return
+	 */
 	@RequestMapping(value = "/cart", method = RequestMethod.DELETE)
-	public ResponseEntity<String> removeFromCart(@RequestParam("cartId") Long cartId){
+	public ResponseEntity<String> removeFromCart(@RequestParam("productId") Long productId, @RequestParam("userId") Long userId){
 		System.out.println("Inside DELETE: /api/cart");
-		System.out.println("Cart ID received is: " + cartId);
+		System.out.println("Product ID received is: " + productId);
+		System.out.println("User ID received is: " + userId);
 		CartCommands comm = null;
 		try {
-			comm = new CartCommands();
-			comm.removeItemFromCart(cartId);
+			cartDao.removeProduct(userId, productId);
 			return new ResponseEntity<String>("Item removed", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,6 +118,9 @@ public class CartController {
 		}
 	}
 	
+	/**
+	 * Removing this permanently. Not required.
+	 * **/
 	@RequestMapping(value="/cart", method=RequestMethod.PUT)
 	public ResponseEntity<CartItem> updateQuantity(@RequestBody UpdateCartForm updateRequest){
 		System.out.println("Inside PUT: api/cart");

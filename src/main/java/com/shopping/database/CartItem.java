@@ -3,17 +3,10 @@
  */
 package com.shopping.database;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-
 /**
  * @author Amit
  *
  */
-@DynamoDBTable(tableName="Cart")
 public class CartItem {
 
 	private int userId;
@@ -32,7 +25,6 @@ public class CartItem {
 	/**
 	 * @return the userId
 	 */
-	@DynamoDBHashKey(attributeName="UserId")
 	public int getUserId() {
 		return userId;
 	}
@@ -47,7 +39,6 @@ public class CartItem {
 	/**
 	 * @return the cartId
 	 */
-	@DynamoDBRangeKey(attributeName="CartId")
 	public Long getCartId() {
 		return cartId;
 	}
@@ -62,7 +53,6 @@ public class CartItem {
 	/**
 	 * @return the productId
 	 */
-	@DynamoDBAttribute(attributeName="ProductId")
 	public Long getProductId() {
 		return productId;
 	}
@@ -84,7 +74,6 @@ public class CartItem {
 	/**
 	 * @return the quantity
 	 */
-	@DynamoDBAttribute(attributeName="Quantity")
 	public int getQuantity() {
 		return quantity;
 	}
@@ -96,7 +85,6 @@ public class CartItem {
 		this.quantity = quantity;
 	}
 
-	@DynamoDBIgnore
 	public double getTotalPrice() {
 		ProductCatalogCommands comm;
 		try {
@@ -116,7 +104,6 @@ public class CartItem {
 	/**
 	 * @return the product
 	 */
-	@DynamoDBIgnore
 	public ProductCatalogItem getProduct() {
 		return product;
 	}
@@ -131,7 +118,6 @@ public class CartItem {
 	/**
 	 * @return the isOrdered
 	 */
-	@DynamoDBAttribute(attributeName="IsOrdered")
 	public int getIsOrdered() {
 		return isOrdered;
 	}

@@ -3,6 +3,9 @@
  */
 package com.shopping.ui.resources;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.asm.util.TraceClassVisitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import com.shoppin.dao.CartDAO;
+import com.shoppin.dao.ProductDAO;
+import com.shoppin.dao.UserDAO;
 import com.shopping.config.DevConfiguration;
 import com.shopping.database.CartItem;
+import com.shopping.pojo.Cart;
+import com.shopping.pojo.Product;
 
 /**
  * @author Amit
@@ -37,18 +45,43 @@ public class CartViewController {
 	public String getCart(@CookieValue (value="userId", defaultValue="-1") int userId, Model model){
 		System.out.println("Inside /cart GET");
 		System.out.println("**user id is received in cookie is : " + userId);
+		List<Product> productList = new ArrayList<Product>();
 		
 		if(userId == -1){
 			return "redirect:/login";
 		}
 		
-		CartItem[] cartItems = requestCartItems(userId);
+		//using dao object. not calling api here.
+		Cart cart = requestCart(userId);
+		if(cart == null){
+			//model.addAttribute("productList", productList);
+			return "redirect:/";
+		}
 		
-		//float ultimateTotal = getUltimateTotal(cartItems); 
-		float ultimateTotal = 0;
+		System.out.println("Got the cart item");
+		
+		List<com.shopping.pojo.CartItem> cartItems = cart.getCartItems();
+		
+		System.out.println("list obtained: count is: " + cartItems.size());
+		
+		double ultimateTotal = cart.getTotalPrice();
+		
+		
 		System.out.println("Ultimate total is: " + ultimateTotal);
+		
+		ProductDAO productDao = new ProductDAO();
+		
+		for(com.shopping.pojo.CartItem i : cartItems){
+			System.out.println("@@ " + i.getProductId());
+			productList.add(productDao.getById(i.getProductId()));
+		}
+		
+		model.addAttribute("cart", cart);
 		model.addAttribute("listOfCartItems", cartItems);
 		model.addAttribute("ultimateTotal", ultimateTotal);
+		model.addAttribute("productList", productList);
+		System.out.println("returning cart");
+		
 		return "cart";
 	}
 	
@@ -60,14 +93,28 @@ public class CartViewController {
 			return "redirect:/login";
 		}
 		
-		CartItem[] cartItems = requestCartItems(userId);
-		float ultimateTotal = getUltimateTotal(cartItems);
+		Cart cart = requestCart(userId);
+		List<com.shopping.pojo.CartItem> cartItems = cart.getCartItems();
+		
+		ProductDAO productDao = new ProductDAO();
+		List<Product> productList = new ArrayList<Product>();
+		
+		for(com.shopping.pojo.CartItem i : cartItems){
+			System.out.println("@@ " + i.getProductId());
+			productList.add(productDao.getById(i.getProductId()));
+		}
+		
+		double ultimateTotal = cart.getTotalPrice();
+		
+		model.addAttribute("cart", cart);
 		model.addAttribute("listOfCartItems", cartItems);
 		model.addAttribute("ultimateTotal", ultimateTotal);
+		model.addAttribute("productList", productList);
+		
 		return "review_order";
 	}
 	
-	float getUltimateTotal(CartItem[] cartItems) {
+/*	float getUltimateTotal(CartItem[] cartItems) {
 		float ultimateTotal = 0;
 		for(CartItem item : cartItems){
 			System.out.println("Cart Item:");
@@ -78,11 +125,19 @@ public class CartViewController {
 		}
 		return ultimateTotal;
 	}
-
-	CartItem[] requestCartItems(int userId) {
+*/
+	Cart requestCart(int userId) {
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<CartItem[]> receivedList = restTemplate.getForEntity(conf.getBASE_URL()+ "/api/cart/"+userId, CartItem[].class);
-		CartItem[] cartItems = receivedList.getBody();
-		return cartItems;
+		System.out.println("calling the API");
+		String myUrl = conf.getBASE_URL()+ "/api/cart/"+userId;
+		//ResponseEntity<Cart> a = restTemplate.getForEntity(myUrl, Cart.class);
+		Cart cart = new Cart();
+		CartDAO cartDao = new CartDAO();
+		
+		cart = cartDao.getCartByUserId(userId);
+	    /*ResponseEntity<Cart> a = restTemplate.getForEntity(myUrl, Cart.class);
+		Cart cart = a.getBody();
+		System.out.println("User Id from the aPI is: " + cart.getUserId());
+		*/return cart;
 	}
 }

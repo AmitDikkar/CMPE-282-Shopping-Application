@@ -54,7 +54,7 @@ public class ProductController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("returning list of products");
+		System.out.println("returning list of products. Count is: " + listOfProducts.size());
 		return new ResponseEntity<List<ProductCatalogItem>>(listOfProducts, HttpStatus.OK);
 	}
 

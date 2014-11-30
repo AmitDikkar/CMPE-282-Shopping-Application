@@ -47,11 +47,13 @@
  	   $("form#placeOrder").submit(function(event) {
 		   event.preventDefault();
 		  var cardValue = $("#cardNumber").val();
+		  
 		  alert("value is: " + cardValue);
-		   if(cardValue.length &lt; 16){
+		  /*  if(cardValue.length &lt; 16){
 			   alert("Card number is invalid, Please make sure it is exactly of 16 digit; all numbers");
-		   }
+		   } */
 		   var data = (JSON.stringify($(this).serializeObject()));
+		   alert(data);
  		   $.ajax({
 			   url:"api/orders",
 			   type:"POST",
@@ -100,14 +102,14 @@
 								</tr>
 				              </thead>
 				              <tbody>
-				                <tr th:each="cartItem, iterStat : ${listOfCartItems}">
+				                <tr th:each="cartItem, iterStat : ${productList}">
 				                  <td> <img width="60" src="resources/themes/images/products/4.jpg" alt=""/></td>
-				                  <td th:utext="${cartItem.product.name} + '&lt;br /&gt;' + ${cartItem.product.description}" >MASSA AST<br/>Color : black, Material : metal</td>
+				                  <td th:utext="'song-' + ${cartItem.productId} + '&lt;br /&gt;' + ${cartItem.productDescription}" >MASSA AST<br/>Color : black, Material : metal</td>
 								  
-				                  <td th:text="${cartItem.totalPrice}">$120.00</td>
+				                  <td th:text="${cartItem.price}">$120.00</td>
 				                  <td>$00.00</td>
 				                  <td>$00.00</td>
-				                  <td th:text="${cartItem.totalPrice}">$110.00</td>
+				                  <td th:text="${cartItem.price}">$110.00</td>
 				                </tr>
 								<!-- <tr>
 				                  <td> <img width="60" src="resources/themes/images/products/8.jpg" alt=""/></td>
@@ -182,7 +184,7 @@
 									  <input type="text" id="zipCode" name="zipCode" placeholder="Zip Code"/>
 									</div>
 								  </div>
-								  <input type="hidden" name="userId" id="userId" value="3"></input>
+								  <input type="hidden" name="userId" id="userId" th:value="${cart.userId}"></input>
 								  <div class="control-group">
 									<div class="controls">
 									  <button type="submit" value="Submit" class="btn">Place Order</button>

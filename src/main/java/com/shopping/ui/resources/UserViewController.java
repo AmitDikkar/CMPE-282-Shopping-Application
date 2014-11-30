@@ -24,23 +24,13 @@ public class UserViewController {
 	
 	
 	/**
-	 * Returns login page.
+	 * Done-Returns login page.
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String showLogin(Model model){
 		System.out.println("This is /login GET");
-		/** insert new - Test**/
-		/*
-		User newUser = new User();
-		newUser.setEmailId("amit.dikkar@gmail.com");
-		newUser.setFirstName("Amit");
-		newUser.setLastName("Dikkar");
-		newUser.setPassword("password");
-		UserDAO userDao = new UserDAO();
-		userDao.insert(newUser);*/
-		
 		return "login";
 	}
 }

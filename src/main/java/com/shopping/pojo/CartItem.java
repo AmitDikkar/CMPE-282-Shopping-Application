@@ -3,6 +3,7 @@
  */
 package com.shopping.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppin.dao.ProductDAO;
 
 /**
@@ -31,6 +32,9 @@ public class CartItem {
 	
 	/** Price of products**/
 	double totalPrice;
+	
+	@JsonIgnore
+	Product product;
 
 	/**
 	 * @return the userId
@@ -88,6 +92,8 @@ public class CartItem {
 	 * @param productId the productId to set
 	 */
 	public void setProductId(long productId) {
+		ProductDAO productDao = new ProductDAO();
+		this.product = productDao.getById(productId);
 		this.productId = productId;
 	}
 
@@ -117,5 +123,19 @@ public class CartItem {
 	 */
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+
+	/**
+	 * @return the product
+	 */
+	public Product getProduct() {
+		return product;
+	}
+
+	/**
+	 * @param product the product to set
+	 */
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 }

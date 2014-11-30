@@ -12,7 +12,8 @@ public class ProductRatingForm {
 	
 	private long productId;
 	
-	private long cartId;
+	private long userId;
+	
 	/**
 	 * @return the rating
 	 */
@@ -41,17 +42,18 @@ public class ProductRatingForm {
 		this.productId = productId;
 	}
 
+
 	/**
-	 * @return the cartId
+	 * @return the userId
 	 */
-	public long getCartId() {
-		return cartId;
+	public long getUserId() {
+		return userId;
 	}
 
 	/**
-	 * @param cartId the cartId to set
+	 * @param userId the userId to set
 	 */
-	public void setCartId(long cartId) {
-		this.cartId = cartId;
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 }
