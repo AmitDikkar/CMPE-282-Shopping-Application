@@ -32,7 +32,7 @@ public class ProductViewController {
 			RestTemplate restTemplate = new RestTemplate();
 			ResponseEntity<ProductCatalogItem> product = restTemplate.getForEntity(conf.getBASE_URL()+"/api/products/"+id, ProductCatalogItem.class);
 			model.addAttribute("item", product.getBody());
-			System.out.println("Product received from RestTemplate is: " + product.getBody().getName());
+			//System.out.println("Product received from RestTemplate is: " + product.getBody().getName());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

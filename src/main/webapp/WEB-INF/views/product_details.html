@@ -50,14 +50,12 @@
 	   $("form#addToCart").submit(function(event) {
 		   event.preventDefault();
 		   var data = (JSON.stringify($(this).serializeObject()));
-		   alert("add to cart");
 		   $.ajax({
 			   url:"api/cart",
 			   type:"POST",
 			   data:data,
 			   contentType:"application/json",
 			   success: function(){
-				   alert("redirecting");
 				  window.location="cart";
 			   },
 			   error: function(errMsg){

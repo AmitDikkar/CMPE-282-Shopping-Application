@@ -4,6 +4,7 @@
 package com.shoppin.dao;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 
 import com.shopping.database.MongoDb;
+import com.shopping.database.ProductCatalogItem;
 import com.shopping.pojo.Product;
 
 /**
@@ -22,7 +24,7 @@ public class ProductDAO {
 	public static MongoCollection collection;
 	
 	public ProductDAO(){
-		collection = new MongoDb().productsCollection;	
+		collection = new MongoDb().productsTestCollection;	
 	}
 	
 	/**
@@ -59,5 +61,11 @@ public class ProductDAO {
 		}
 		System.out.println("prodcuts count: " + products.size());
 		return products;
+	}
+
+	public List<Product> getRelatedProducts(long productId) {
+		String query = "{productId:" + productId + "}";
+		Product dbDetails = collection.findOne(query).as(Product.class);
+		return dbDetails.getRelatedProducts();
 	}
 }

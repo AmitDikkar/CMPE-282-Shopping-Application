@@ -115,10 +115,10 @@
 				<!-- *************************Main body******************* -->
 				<div class="span9">
 				    <ul class="breadcrumb">
-						<li><a href="/">Home</a> <span class="divider">/</span></li>
+						<li><a href="/app">Home</a> <span class="divider">/</span></li>
 						<li class="active"> SHOPPING CART</li>
 				    </ul>
-					<h3>  SHOPPING CART [ <small th:text="${#lists.size(listOfCartItems)} + ' Item(s)'">3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
+					<h3>  SHOPPING CART [ <small th:text="${#lists.size(productList)} + ' Item(s)'">3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
 					<hr class="soft"/>
 					<label hidden="true" th:text="${cart.userId}" id="cartUserId">test label</label>
 					<table class="table table-bordered">
@@ -126,7 +126,7 @@
 				                <tr>
 				                  <th>Product</th>
 				                  <th>Description</th>
-				                  <th>Quantity/Update</th>
+				                  <th>Delete</th>
 								  <th>Price</th>
 				                  <th>Discount</th>
 				                  <th>Tax</th>
@@ -134,10 +134,10 @@
 								</tr>
 				              </thead>
 				              <tbody>
-				              <tr th:each="product, iterStat : ${productList}">
+				              <tr th:each="product, iterStat : ${productList}" >
 				                  <!-- <td> <img width="60" src="resources/themes/images/products/4.jpg" alt=""/></td> -->
-				                  <td th:utext="${product.productName}">MASSA AST<br/>Color : black, Material : metal</td>
-				                  <td th:utext="${product.productDescription}" >MASSA AST<br/>Color : black, Material : metal</td>
+				                  <td th:utext="'song-' + ${product.productName}">MASSA AST<br/>Color : black, Material : metal</td>
+				                  <td th:utext="'descr-' + ${product.productDescription}" >MASSA AST<br/>Color : black, Material : metal</td>
 								  <td>
 									<div class="input-append">
 										<!--<input class="span1" style="max-width:34px; float: left;" id="appendedInputButtons" size="16" type="text" disabled="disabled" th:value="1"/>-->

@@ -3,9 +3,12 @@
  */
 package com.shoppin.dao;
 
+import java.util.List;
+
 import org.jongo.MongoCollection;
 
 import com.shopping.database.MongoDb;
+import com.shopping.pojo.Product;
 import com.shopping.pojo.User;
 
 /**
@@ -17,7 +20,7 @@ public class UserDAO {
 	public static MongoCollection collection;
 	
 	public UserDAO(){
-		collection = new MongoDb().usersCollection;
+		collection = new MongoDb().usersTestCollection;
 	}
 	
 	
@@ -57,5 +60,14 @@ public class UserDAO {
 		String query = "{emailId:'" + inputEmail + "'}";
 		User dbDetails = collection.findOne(query).as(User.class);
 		return dbDetails;
+	}
+
+
+	public List<Product> getRecommendedProducts(long id) {
+		String query = "{userId:" + id + "}";
+		MongoCollection coll = new MongoDb().usersTestCollection;
+		User dbDetails = coll.findOne(query).as(User.class);
+		List<Product> ls = dbDetails.getRecommendedProducts();
+		return ls;
 	}
 }

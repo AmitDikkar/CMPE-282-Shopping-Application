@@ -58,7 +58,9 @@ public class UserController {
 		com.shopping.pojo.User newUser = new com.shopping.pojo.User();
 		newUser.setEmailId(registrationDetails.getInputEmail());
 		newUser.setPassword(registrationDetails.getInputPassword());
-		newUser.setUserId(registrationDetails.getUserId());
+
+		//TODO assign random id from database.
+		newUser.setUserId(-4);
 		newUser.setFirstName(registrationDetails.getInputFirstName());
 		newUser.setLastName(registrationDetails.getInputLastName());
 		

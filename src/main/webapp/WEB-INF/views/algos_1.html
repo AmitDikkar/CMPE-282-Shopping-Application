@@ -21,9 +21,12 @@
 <link rel="apple-touch-icon-precomposed" href="resources/themes/images/ico/apple-touch-icon-57-precomposed.png"></link>
 <style type="text/css" id="enject"></style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link href="resources/themes/css/stylesheet.css" rel="stylesheet" />
+<script type="text/javascript" src="resources/themes/js/myjs.js"></script>
 
 <script type="text/javascript">
    $(document).ready(function() {
+	   initializeDocument();
 	   $.fn.serializeObject = function()
 	   {
 	      var o = {};
@@ -41,69 +44,107 @@
 	      return o;
 	   };
 	   
- 	   $("form#login").submit(function(event) {
- 		   event.preventDefault();
+ 	   $("form#placeOrder").submit(function(event) {
+		   event.preventDefault();
 		    var data = (JSON.stringify($(this).serializeObject()));
+		   alert(data);
  		   $.ajax({
-			   url:"api/login",
+			   url:"api/orders",
 			   type:"POST",
 			   data:data,
 			   contentType:"application/json",
-			   success: function(data){
-				  document.cookie = "userId=" + data.userId;
-				  document.cookie = "userName=" + data.userName;
-				  window.location = "/app";
+			   dataType:"json",
+			   success: function(){
+				   //TODO: need to redirect on status page.
+				  window.location = "orderSuccess";
 			   },
-			   error: function(errMsg, e, x){
-				   alert("Invalid credentials");
+			   error: function(errMsg){
+				   alert("Sorry, we  can not place the order at this time. Please try again later");
 			   }
 			 });
 	   });
+ 	   
+ 	   
+ 	  $('input[type=radio]').click(function(){
+ 		 $(this).closest("form").submit(); 
+ 	  });
+ 	  
+ 	  $("form#rate").submit(function(event) {
+ 		 event.preventDefault();
+ 			var data = (JSON.stringify($(this).serializeObject()));
+		   	alert(data);
+		    $.ajax({
+				   url:"api/review",
+				   type:"POST",
+				   data:data,
+				   contentType:"application/json",
+				   //dataType:"json",
+				   success: function(message, err){
+					   //TODO: do nothing
+				   },
+				   error: function(errMsg){
+					   alert("Sorry, we  can not place the order at this time. Please try again later");
+				   }
+				 });
+ 	  });
    });
 </script>
-
 </head>
 
 <body>
 	 <div th:include="layout :: topper"></div>
-	 <div id="mainBody">
+	 	 <div id="mainBody">
 		<div class="container">
 			<div class="row">
 				<div th:include="layout :: sidebar"></div>
 				<!-- *************************Main body******************* -->
 				<div class="span9">
-					<ul class="breadcrumb">
-						<li><a href="index.html">Home</a> <span class="divider">/</span></li>
-						<li class="active">Login</li>
-					</ul>
-					<h3>Login</h3>
-					<p><em th:text="${mainMessage}"></em></p>
+				    <ul class="breadcrumb">
+						<li><a href="/">Home</a> <span class="divider">/</span></li>
+						<li><a href="/cart?id=1">Algos</a> <span class="divider">/</span></li>
+						<li class="active"> Algorithm Details</li>
+				    </ul>
+					<h3>  Algorithm Details <small></small><a href="products.html" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
+					<hr class="soft"/>		
 					<table class="table table-bordered">
-							 <tr><th>Enter Login Details or <a href="register" style="color: green;">Sign Up here</a></th></tr>
+							 <tr><th>Enter Song Id</th></tr>
 							 <tr> 
 							 <td>
-								<form class="form-horizontal" action="login" id="login" method="POST">
+								<form class="form-horizontal" action="#" th:action="@{/algos}" th:object="${algoItem}" method="post">
 								  <div class="control-group">
-									<label class="control-label" for="inputEmail">Email</label>
+									<label class="control-label" for="itemId">Song ID</label>
 									<div class="controls">
-									  <input type="text" id="inputEmail" name="inputEmail" placeholder="Email"/>
+									  <input type="number" id="itemId" name="itemId" placeholder="song Id"/>
 									</div>
 								  </div>
 								  <div class="control-group">
-									<label class="control-label" for="inputPassword">Password</label>
-									<div class="controls">
-									  <input type="password" id="inputPassword" name="inputPassword" placeholder="Password"/>
-									</div>
-								  </div>
-									<div class="control-group">
 										<div class="controls">
-											<input class="btn btn-large btn-success" type="submit" value="Login" />
+											<input class="btn btn-large btn-success" type="submit" value="Get Results" />
 										</div>
 									</div>
 								</form>				  
 							  </td>
 							  </tr>
 				            </table>
+					<table class="table table-bordered">
+				              <thead>
+				                <tr>
+				                  <th>Item</th>
+				                  <th>Track</th>
+								  <th>Ratings</th>
+				                   <th>Algorithm</th>
+								</tr>
+				              </thead>
+				              <tbody>
+				                <tr th:each="item,iterStat : ${items}">
+				                  <td th:utext="${item.item}">MASSA AST<br/>Color : black, Material : metal</td>
+				                  <td th:text="${item.track}">$120.00</td>
+				                  <td th:text="${item.rating}">$00.00</td>
+				                  <td th:text="${item.algo}">$00.00</td>
+				                </tr>
+						 	</tbody>
+				            </table>
+					<a href="/" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
 				</div>
 				<!-- *************************Main body ends******************* -->
 				</div>

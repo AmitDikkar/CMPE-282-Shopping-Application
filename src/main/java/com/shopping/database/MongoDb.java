@@ -24,6 +24,10 @@ public class MongoDb {
 	
 	public MongoCollection productsCollection;
 	
+	public MongoCollection usersTestCollection;
+	
+	public MongoCollection productsTestCollection;
+
 	public MongoDb(){
 		MongoClient client = null;
 		try {
@@ -42,6 +46,8 @@ public class MongoDb {
 		cartsCollection = jongo.getCollection("carts");
 		productsCollection = jongo.getCollection("products");
 		usersCollection = jongo.getCollection("users");
+		usersTestCollection = jongo.getCollection("usersTest");
+		productsTestCollection = jongo.getCollection("productsTest");
 	}
 	
 }

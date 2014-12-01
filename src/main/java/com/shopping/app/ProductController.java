@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.amazonaws.services.cloudfront.model.Method;
 import com.shoppin.dao.ProductDAO;
+import com.shoppin.dao.UserDAO;
 import com.shopping.database.ProductCatalogCommands;
 import com.shopping.database.ProductCatalogItem;
 import com.shopping.pojo.Product;
@@ -74,7 +75,7 @@ public class ProductController {
 		
 		if(product == null){
 			System.out.println("this is null");
-			return new ResponseEntity<ProductCatalogItem>(item, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<ProductCatalogItem>(HttpStatus.NO_CONTENT);
 		}
 		
 		item.setDescription(product.getProductDescription());
@@ -102,7 +103,7 @@ public class ProductController {
 		newProduct.setPrice(newItem.getPrice());
 		newProduct.setProductDescription(newItem.getDescription());
 		newProduct.setProductName(newItem.getName());
-		newProduct.setProductId(newItem.getId());
+		newProduct.setProductId(8524);
 		newProduct.setCategory(newItem.getCategory());
 		
 		productDao.insert(newProduct);
@@ -111,11 +112,11 @@ public class ProductController {
 	}
 
 	@RequestMapping(value="/userbasedproducts")
-	public ResponseEntity<List<ProductCatalogItem>> getUserBasedProducts(@RequestParam(value="userId", required=true) int userId, Model model) {
+	public ResponseEntity<List<ProductCatalogItem>> getUserBasedProducts(@RequestParam(value="userId", required=true) long userId, Model model) {
 
 		//TODO do mahout based
 
-		ProductCatalogItem item1 = new ProductCatalogItem();
+/*		ProductCatalogItem item1 = new ProductCatalogItem();
 		item1.setId((long)1);
 		item1.setName("item-1");
 		item1.setPrice(10);
@@ -127,7 +128,15 @@ public class ProductController {
 
 		List<ProductCatalogItem> items = new ArrayList<ProductCatalogItem>();
 		items.add(item1);
-		items.add(item2);
+		items.add(item2);*/
+		UserDAO userDao = new UserDAO();
+		List<Product> lsProducts = userDao.getRecommendedProducts(userId);
+		
+		if(lsProducts == null){
+			return new ResponseEntity<List<ProductCatalogItem>>(HttpStatus.NO_CONTENT);
+		}
+		List<ProductCatalogItem> items = castToProductCatalogItems(lsProducts);
+		
 		return new ResponseEntity<List<ProductCatalogItem>>(items, HttpStatus.OK);
 	}
 
@@ -152,7 +161,7 @@ public class ProductController {
 		return new ResponseEntity<List<ProductCatalogItem>>(items, HttpStatus.OK);
 	}
 	
-	private List<ProductCatalogItem> castToProductCatalogItems(List<Product> products) {
+	public List<ProductCatalogItem> castToProductCatalogItems(List<Product> products) {
 		List<ProductCatalogItem> items = new ArrayList<ProductCatalogItem>();
 		for (Product product : products) {
 			ProductCatalogItem item = new ProductCatalogItem();

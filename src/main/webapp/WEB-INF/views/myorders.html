@@ -47,7 +47,7 @@
  	   $("form#placeOrder").submit(function(event) {
 		   event.preventDefault();
 		    var data = (JSON.stringify($(this).serializeObject()));
-		   alert(data);
+		   
  		   $.ajax({
 			   url:"api/orders",
 			   type:"POST",
@@ -72,7 +72,7 @@
  	  $("form#rate").submit(function(event) {
  		 event.preventDefault();
  			var data = (JSON.stringify($(this).serializeObject()));
-		   	alert(data);
+		   	
 		    $.ajax({
 				   url:"api/review",
 				   type:"POST",

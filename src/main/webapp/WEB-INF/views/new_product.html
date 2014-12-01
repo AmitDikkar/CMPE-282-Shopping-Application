@@ -44,7 +44,7 @@
 	   
  	  $("form#newProduct").submit(function(event){
  		  event.preventDefault();
-		   //alert("triggered");
+		   alert("triggered");
 		   var data = (JSON.stringify($(this).serializeObject()));
  		   $.ajax({
 			   url:"api/products",
@@ -53,7 +53,7 @@
 			   contentType:"application/json",
 			   dataType:"json",
 			   success: function(){
-				  window.location = "/";
+				  window.location = "/app";
 			   },
 			   error: function(requestObject, error, errorThrown){
 				   alert(error);
@@ -90,13 +90,13 @@
 									</div>
 								  </div>
 								  <div class="control-group">
-									<label class="control-label" for="category">Category</label>
+									<label class="control-label" for="category">Genre</label>
 									<div class="controls">
 									 	<select name="category" id="category">
-											<option value="Electronics">Electronics</option>
-											<option value="Computers">Computers</option>
-											<option value="Health and Beauty" >Health and Beauty</option>
-											<option value="Clothes" selected="selected">Clothes</option>
+											<option value="Rock">Rock</option>
+											<option value="Metal">Metal</option>
+											<option value="Classical" >Classical</option>
+											<option value="Blues" selected="selected">Blues</option>
 										</select>
 									  <!-- <input type="text" id="category" name="category" placeholder="Last Name"/> -->
 									</div>
